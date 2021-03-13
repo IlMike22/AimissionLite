@@ -21,9 +21,11 @@ class GoalsAdapter : ListAdapter<Goal, GoalsAdapter.GoalViewHolder>(GoalComparat
 
     class GoalViewHolder(goalView: View) : RecyclerView.ViewHolder(goalView) {
         private val goalTitle: TextView = goalView.findViewById(R.id.goal_title)
+        private val goalDescription: TextView = goalView.findViewById(R.id.goal_description)
 
         fun bind(goal: Goal?) {
             goalTitle.text = goal?.title
+            goalDescription.text = goal?.description
         }
 
         companion object {

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--strings -->
+    <string name="text_view_title">Gib ein neues Ziel ein</string>
+    <string name="button_done">Fertig</string>
+    <string name="edit_text_title_hint">Titel</string>
+    <string name="edit_text_description_hint">Beschreibung</string>
+    <string name="text_view_priority">Priorität</string>
+    <string name="picker_genre">Genre</string>
+
+    <!--styles -->
+    <style name="text_view">
+        <item name="android:padding">8dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Large</item>
+    </style>
+    <style name="edit_text">
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:background">@color/material_on_primary_emphasis_high_type</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Large</item>
+    </style>
+</resources>

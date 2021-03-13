@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aimissionlite.models.Goal
 
-class FirstFragment : Fragment() {
+class MainFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_first, container, false)
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,9 +33,8 @@ class FirstFragment : Fragment() {
         recyclerView.adapter = goalAdapter
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-        // get data from viewmodel
-        val viewModel: GoalViewModel by viewModels {
-            GoalViewModel.GoalViewModelFactory((this.activity?.application as AimissionApplication).repository)
+        val viewModel: MainViewModel by viewModels {
+            MainViewModel.MainViewModelFactory((this.activity?.application as AimissionApplication).repository)
         }
 
         viewModel.allGoals.observe(viewLifecycleOwner, Observer { goals ->
@@ -44,14 +43,5 @@ class FirstFragment : Fragment() {
                 goalAdapter.submitList(goals)
             }
         })
-
-        // simple sample
-        val newGoal = Goal(
-            id = 22,
-            title = "Hello",
-            description = "World")
-
-        viewModel.insert(newGoal)
-        println("!!! new goal added to db!")
     }
 }

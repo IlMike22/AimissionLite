@@ -1,25 +1,30 @@
-package com.example.aimissionlite
+package com.example.aimissionlite.models
 
 import androidx.lifecycle.*
+import com.example.aimissionlite.MainViewModel
 import com.example.aimissionlite.data.GoalRepository
-import com.example.aimissionlite.models.Goal
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
+import java.time.DateTimeException
+import java.time.LocalDateTime
 
-class GoalViewModel(private val repository: GoalRepository) : ViewModel() {
+class DetailViewModel(private val repository:GoalRepository): ViewModel() {
     val allGoals: LiveData<List<Goal>> = repository.allGoals.asLiveData()
 
     fun insert(goal: Goal) = viewModelScope.launch {
         repository.insert(goal)
     }
 
-    class GoalViewModelFactory(private val repository: GoalRepository) : ViewModelProvider.Factory {
+    fun getCurrentDate():String = LocalDateTime.now().toString()
+
+    class DetailViewModelFactory(private val repository:GoalRepository):ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(GoalViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return GoalViewModel(repository) as T
+                return DetailViewModel(repository) as T
             }
             throw IllegalArgumentException("Unknown viewmodel class")
         }
+
     }
 }

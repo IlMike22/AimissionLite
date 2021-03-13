@@ -10,7 +10,7 @@ import com.example.aimissionlite.models.Goal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Goal::class], version = 1, exportSchema = false)
+@Database(entities = [Goal::class], version = 2, exportSchema = false)
 abstract class GoalRoomDatabase : RoomDatabase() {
     abstract fun goalDao(): IGoalDao
 
@@ -28,23 +28,6 @@ abstract class GoalRoomDatabase : RoomDatabase() {
 
         suspend fun populateDatabase(goalDao: IGoalDao) {
             goalDao.deleteAll()
-
-            // Add some sample words
-            val goal = Goal(
-                id = 123,
-                title = "Hello",
-                description = "World"
-            )
-
-            goalDao.insert(goal)
-
-            val newGoal = Goal(
-                id = 2,
-                title = "A second goal",
-                description = "Here is the description"
-            )
-
-            goalDao.insert(newGoal)
         }
     }
 
@@ -62,6 +45,7 @@ abstract class GoalRoomDatabase : RoomDatabase() {
                     GoalRoomDatabase::class.java,
                     "goal_database"
                 ).addCallback(GoalDatabaseCallback(scope))
+                    .fallbackToDestructiveMigration()
                     .build()
 
                 INSTANCE = instance

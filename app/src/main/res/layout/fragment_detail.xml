@@ -4,31 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SecondFragment">
+    tools:context=".DetailFragment">
 
     <TextView
         android:id="@+id/textview_title"
-        android:layout_width="wrap_content"
+        style="@style/text_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/text_view_title"
-        app:layout_constraintBottom_toTopOf="@id/button_save_goal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/edit_text_title"/>
 
     <EditText
         android:id="@+id/edit_text_title"
         style="@style/edit_text"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
         app:layout_constraintBottom_toTopOf="@id/button_save_goal"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_title"
+        android:autofillHints="@string/edit_text_title_hint"
+        android:hint="@string/edit_text_title_hint"/>
+
+    <EditText
+        android:id="@+id/edit_text_description"
+        style="@style/edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="@string/edit_text_description_hint"
+        android:hint="@string/edit_text_description_hint"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@id/button_save_goal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_title" />
 
     <Button
         android:id="@+id/button_save_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_title"
+        android:text="@string/button_done"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
