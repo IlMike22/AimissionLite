@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.aimissionlite.models.Goal
+import com.example.aimissionlite.models.domain.Goal
 
 class GoalsAdapter : ListAdapter<Goal, GoalsAdapter.GoalViewHolder>(GoalComparator()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GoalViewHolder {

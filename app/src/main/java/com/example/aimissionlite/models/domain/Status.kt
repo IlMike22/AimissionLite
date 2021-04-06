@@ -1,4 +1,4 @@
-package com.example.aimissionlite.models
+package com.example.aimissionlite.models.domain
 
 enum class Status {
     TODO,

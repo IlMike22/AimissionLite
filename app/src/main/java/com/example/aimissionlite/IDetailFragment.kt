@@ -1,7 +1,6 @@
 package com.example.aimissionlite
 
-import com.example.aimissionlite.models.DetailViewModel
-import com.example.aimissionlite.models.Goal
+import com.example.aimissionlite.models.domain.Goal
 
 interface IDetailFragment {
     fun addGoal(goal: Goal)

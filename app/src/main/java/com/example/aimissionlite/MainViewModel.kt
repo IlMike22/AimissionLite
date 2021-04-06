@@ -2,8 +2,7 @@ package com.example.aimissionlite
 
 import androidx.lifecycle.*
 import com.example.aimissionlite.data.GoalRepository
-import com.example.aimissionlite.models.Goal
-import kotlinx.coroutines.launch
+import com.example.aimissionlite.models.domain.Goal
 import java.lang.IllegalArgumentException
 
 class MainViewModel(private val repository: GoalRepository) : ViewModel() {

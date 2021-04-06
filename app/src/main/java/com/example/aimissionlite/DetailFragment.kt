@@ -10,6 +10,10 @@ import android.widget.EditText
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.aimissionlite.models.*
+import com.example.aimissionlite.models.domain.Genre
+import com.example.aimissionlite.models.domain.Goal
+import com.example.aimissionlite.models.domain.Priority
+import com.example.aimissionlite.models.domain.Status
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -42,11 +46,11 @@ class DetailFragment : IDetailFragment, Fragment() {
                 title = goalTitle,
                 description = goalDescription,
                 creationDate = currentDate,
-                changeDate = currentDate
-//                isRepeated = false,
-//                genre = Genre.UNKNOWN,  // this must already be implemented
-//                status = Status.UNKOWN,// this must already be implemented
-//                priority = Priority.UNKNOWN // this must already be implemented
+                changeDate = currentDate,
+                isRepeated = false,
+                genre = Genre.UNKNOWN,
+                status = Status.UNKOWN,
+                priority = Priority.UNKNOWN
             )
 
             addGoal(newGoal)

@@ -1,11 +1,10 @@
 package com.example.aimissionlite.models
 
 import androidx.lifecycle.*
-import com.example.aimissionlite.MainViewModel
 import com.example.aimissionlite.data.GoalRepository
+import com.example.aimissionlite.models.domain.Goal
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
-import java.time.DateTimeException
 import java.time.LocalDateTime
 
 class DetailViewModel(private val repository:GoalRepository): ViewModel() {
