@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.aimissionlite.models.*
@@ -14,11 +16,16 @@ import com.example.aimissionlite.models.domain.Genre
 import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Priority
 import com.example.aimissionlite.models.domain.Status
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class DetailFragment : IDetailFragment, Fragment() {
+    private var choosenChipGenre: Chip? = null
+    private var choosenChipPriority: Chip? = null
+
     private val viewModel: DetailViewModel by viewModels {
         DetailViewModel.DetailViewModelFactory((this.activity?.application as AimissionApplication).repository)
     }
@@ -34,6 +41,20 @@ class DetailFragment : IDetailFragment, Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val chipGroupGenre = view.findViewById<ChipGroup>(R.id.chip_group_genre) // todo use data-binding
+        val chipGroupPriority = view.findViewById<ChipGroup>(R.id.chip_group_priority) // todo use data-binding
+
+        chipGroupGenre.setOnCheckedChangeListener { group, checkedId ->
+            choosenChipGenre = view.findViewById(checkedId) // todo use data-binding
+            Toast.makeText(activity, "${choosenChipGenre?.text} clicked", Toast.LENGTH_SHORT).show()
+        }
+
+        chipGroupPriority.setOnCheckedChangeListener { group, checkedId ->
+            choosenChipPriority = view.findViewById(checkedId) // todo use data-binding
+            Toast.makeText(activity, "${choosenChipPriority?.text} clicked", Toast.LENGTH_SHORT)
+                .show()
+        }
+
         view.findViewById<Button>(R.id.button_save_goal).setOnClickListener {
             val goalTitle = view.findViewById<EditText>(R.id.edit_text_title).text.toString()
             val goalDescription =
@@ -48,24 +69,40 @@ class DetailFragment : IDetailFragment, Fragment() {
                 creationDate = currentDate,
                 changeDate = currentDate,
                 isRepeated = false,
-                genre = Genre.UNKNOWN,
+                genre = choosenChipGenre.toGenre(),
                 status = Status.UNKOWN,
-                priority = Priority.UNKNOWN
+                priority = choosenChipPriority.toPriority()
             )
 
             addGoal(newGoal)
 
-
-            // call via viewmodel insert() and insert the new dataset into room.
-            // use the id of the new goal to pass it to main fragment
-            // there we ready out the new goal again because we should not transport the complete goal via navigation
-            // after we have read the new goal in main fragment we update the recycler view after we added the new goal (?)
-
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+            val bundle =
+                bundleOf(resources.getString(R.string.bundle_argument_goal_title) to goalTitle)
+            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment, bundle)
         }
     }
 
     override fun addGoal(goal: Goal) {
         viewModel.insert(goal)
+    }
+
+    companion object {
+        private fun Chip?.toGenre(): Genre =
+            when (this?.id) {
+                R.id.chip_genre_business -> Genre.BUSINESS
+                R.id.chip_genre_socialising -> Genre.SOCIALISING
+                R.id.chip_genre_fittness -> Genre.FITTNESS
+                R.id.chip_genre_money -> Genre.MONEY
+                R.id.chip_genre_partnership -> Genre.PARTNERSHIP
+                R.id.chip_genre_health -> Genre.HEALTH
+                else -> Genre.UNKNOWN
+            }
+
+        private fun Chip?.toPriority(): Priority =
+            when (this?.id) {
+                R.id.chip_priority_low -> Priority.LOW
+                R.id.chip_priority_high -> Priority.HIGH
+                else -> Priority.NORMAL
+            }
     }
 }

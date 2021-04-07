@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -24,8 +25,10 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (arguments != null) { // todo next, bundle with goal_id is already there, but there is no id because you did not set the argument in detailfragment
-            Log.i("michl","argument found")
+        if (arguments != null) {
+            val goalTitle = arguments?.getString(resources.getString(R.string.bundle_argument_goal_title))
+            Toast.makeText(activity, "Goal $goalTitle successfully created!", Toast.LENGTH_SHORT)
+                .show()
         }
 
         view.findViewById<Button>(R.id.button_first).setOnClickListener {

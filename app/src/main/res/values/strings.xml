@@ -6,6 +6,7 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="create_new_goal">Create New Goal</string>
     <string name="previous">Previous</string>
+    <string name="bundle_argument_goal_title">goal_title</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
@@ -15,4 +16,10 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
+    <string name="chip_genre_partnership_text">Partnership</string>
+    <string name="chip_genre_socialising_text">Socialising</string>
+    <string name="chip_genre_health_text">Health</string>
+    <string name="chip_genre_money_text">Money</string>
+    <string name="chip_genre_fittness_text">Fittness</string>
+    <string name="chip_genre_business_text">Business</string>
 </resources>
