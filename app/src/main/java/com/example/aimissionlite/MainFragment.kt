@@ -46,7 +46,6 @@ class MainFragment : Fragment() {
 
         viewModel.allGoals.observe(viewLifecycleOwner, Observer { goals ->
             goals?.let { goals ->
-                println("!!! data changed! update adapter and so recyclerview.")
                 goalAdapter.submitList(goals)
             }
         })

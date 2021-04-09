@@ -9,22 +9,22 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
-import com.example.aimissionlite.models.*
 import com.example.aimissionlite.models.domain.Genre
 import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Priority
 import com.example.aimissionlite.models.domain.Status
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.example.aimissionlite.databinding.FragmentDetailBinding
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
 class DetailFragment : IDetailFragment, Fragment() {
-    private var choosenChipGenre: Chip? = null
-    private var choosenChipPriority: Chip? = null
+    private var choosenGenre: Chip? = null
+    private var choosenPriority: Chip? = null
 
     private val viewModel: DetailViewModel by viewModels {
         DetailViewModel.DetailViewModelFactory((this.activity?.application as AimissionApplication).repository)
@@ -33,25 +33,33 @@ class DetailFragment : IDetailFragment, Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+    ): View {
+        val binding: FragmentDetailBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
+        binding.lifecycleOwner = this
+
+        binding.setVariable(BR.viewModel, viewModel) // binding the view model and execute this
+        binding.executePendingBindings()
+
+        return binding.getRoot()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val chipGroupGenre = view.findViewById<ChipGroup>(R.id.chip_group_genre) // todo use data-binding
-        val chipGroupPriority = view.findViewById<ChipGroup>(R.id.chip_group_priority) // todo use data-binding
+        val chipGroupGenre =
+            view.findViewById<ChipGroup>(R.id.chip_group_genre) // todo use data-binding
+        val chipGroupPriority =
+            view.findViewById<ChipGroup>(R.id.chip_group_priority) // todo use data-binding
 
         chipGroupGenre.setOnCheckedChangeListener { group, checkedId ->
-            choosenChipGenre = view.findViewById(checkedId) // todo use data-binding
-            Toast.makeText(activity, "${choosenChipGenre?.text} clicked", Toast.LENGTH_SHORT).show()
+            choosenGenre = view.findViewById(checkedId) // todo use data-binding
+            Toast.makeText(activity, "${choosenGenre?.text} clicked", Toast.LENGTH_SHORT).show()
         }
 
         chipGroupPriority.setOnCheckedChangeListener { group, checkedId ->
-            choosenChipPriority = view.findViewById(checkedId) // todo use data-binding
-            Toast.makeText(activity, "${choosenChipPriority?.text} clicked", Toast.LENGTH_SHORT)
+            choosenPriority = view.findViewById(checkedId) // todo use data-binding
+            Toast.makeText(activity, "${choosenPriority?.text} clicked", Toast.LENGTH_SHORT)
                 .show()
         }
 
@@ -69,11 +77,10 @@ class DetailFragment : IDetailFragment, Fragment() {
                 creationDate = currentDate,
                 changeDate = currentDate,
                 isRepeated = false,
-                genre = choosenChipGenre.toGenre(),
+                genre = choosenGenre.toGenre(),
                 status = Status.UNKOWN,
-                priority = choosenChipPriority.toPriority()
+                priority = choosenPriority.toPriority()
             )
-
             addGoal(newGoal)
 
             val bundle =

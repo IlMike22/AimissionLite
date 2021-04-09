@@ -1,174 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".DetailFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.aimissionlite.DetailViewModel" />
+    </data>
 
-    <ScrollView
-        android:id="@+id/scroll_view_create_goal"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".DetailFragment">
 
-        <LinearLayout
-            android:id="@+id/linear_layout_create_goal_container"
+        <ScrollView
+            android:id="@+id/scroll_view_create_goal"
             android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/linear_layout_create_goal_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textview_title"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_view_title"
+                    app:layout_constraintBottom_toTopOf="@id/edit_text_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/edit_text_title"
+                    style="@style/edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:autofillHints="@string/edit_text_title_hint"
+                    android:hint="@string/edit_text_title_hint"
+                    android:inputType="text"
+                    app:layout_constraintBottom_toTopOf="@id/edit_text_description"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_title" />
+
+                <EditText
+                    android:id="@+id/edit_text_description"
+                    style="@style/edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="@string/edit_text_description_hint"
+                    android:hint="@string/edit_text_description_hint"
+                    android:inputType="text"
+                    app:layout_constraintBottom_toTopOf="@id/chip_group_genre"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edit_text_title" />
+
+                <TextView
+                    android:id="@+id/textview_header_genre"
+                    style="@style/text_view_header_genre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Choose a genre for your goal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/edit_text_description" />
+
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group_genre"
+                    style="@style/common_chip_group_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="111dp"
+                    app:layout_constraintBottom_toTopOf="@+id/chip_group_priority"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edit_text_description"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_genre_business"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/chip_genre_business_text" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_genre_fittness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/chip_genre_fittness_text" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_genre_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/chip_genre_money_text" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_genre_partnership"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/chip_genre_partnership_text" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_genre_socialising"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/chip_genre_socialising_text" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_genre_health"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/chip_genre_health_text" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:id="@+id/textview_header_priority"
+                    style="@style/text_view_header_priority"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Choose a priority"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/chip_group_genre" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group_priority"
+                    style="@style/common_chip_group_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="111dp"
+                    app:layout_constraintBottom_toTopOf="@+id/button_save_goal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_header_priority"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_priority_low"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="Low priority" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_priority_high"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="High priority" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/button_save_goal"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="@{viewModel.buttonText}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/scroll_view_create_goal"
+            app:layout_constraintVertical_bias="0.964" />
 
-            <TextView
-                android:id="@+id/textview_title"
-                style="@style/text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/text_view_title"
-                app:layout_constraintBottom_toTopOf="@id/edit_text_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <EditText
-                android:id="@+id/edit_text_title"
-                style="@style/edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:autofillHints="@string/edit_text_title_hint"
-                android:hint="@string/edit_text_title_hint"
-                android:inputType="text"
-                app:layout_constraintBottom_toTopOf="@id/edit_text_description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_title" />
-
-            <EditText
-                android:id="@+id/edit_text_description"
-                style="@style/edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="@string/edit_text_description_hint"
-                android:hint="@string/edit_text_description_hint"
-                android:inputType="text"
-                app:layout_constraintBottom_toTopOf="@id/chip_group_genre"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_title" />
-
-            <TextView
-                android:id="@+id/textview_header_genre"
-                style="@style/text_view_header_genre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Choose a genre for your goal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edit_text_description" />
-
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chip_group_genre"
-                style="@style/common_chip_group_style"
-                android:layout_width="match_parent"
-                android:layout_height="111dp"
-                app:layout_constraintBottom_toTopOf="@+id/chip_group_priority"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_description"
-                app:singleSelection="true">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_genre_business"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/chip_genre_business_text" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_genre_fittness"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/chip_genre_fittness_text" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_genre_money"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/chip_genre_money_text" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_genre_partnership"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/chip_genre_partnership_text" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_genre_socialising"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/chip_genre_socialising_text" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_genre_health"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/chip_genre_health_text" />
-
-            </com.google.android.material.chip.ChipGroup>
-
-            <TextView
-                android:id="@+id/textview_header_priority"
-                style="@style/text_view_header_priority"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Choose a priority"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/chip_group_genre" />
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chip_group_priority"
-                style="@style/common_chip_group_style"
-                android:layout_width="match_parent"
-                android:layout_height="111dp"
-                app:layout_constraintBottom_toTopOf="@+id/button_save_goal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_header_priority"
-                app:singleSelection="true">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_priority_low"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="Low priority" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_priority_high"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="High priority" />
-
-            </com.google.android.material.chip.ChipGroup>
-
-        </LinearLayout>
-
-    </ScrollView>
-
-
-    <Button
-        android:id="@+id/button_save_goal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_done"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/scroll_view_create_goal"
-        app:layout_constraintVertical_bias="0.964" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
