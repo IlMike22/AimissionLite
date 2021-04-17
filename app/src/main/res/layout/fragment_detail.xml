@@ -34,6 +34,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <!--IMPORTANT: The "=" for android:text leads to observe user input for this editText and we can get it in vm!-->
                 <EditText
                     android:id="@+id/edit_text_title"
                     style="@style/edit_text"
@@ -43,6 +44,7 @@
                     android:autofillHints="@string/edit_text_title_hint"
                     android:hint="@string/edit_text_title_hint"
                     android:inputType="text"
+                    android:text="@={viewModel.goalTitle}"
                     app:layout_constraintBottom_toTopOf="@id/edit_text_description"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textview_title" />
@@ -64,7 +66,7 @@
                     style="@style/text_view_header_genre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Choose a genre for your goal"
+                    android:text="@string/choose_genre"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/edit_text_description" />
 
@@ -129,7 +131,7 @@
                     style="@style/text_view_header_priority"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Choose a priority"
+                    android:text="@string/choose_priority"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/chip_group_genre" />
 
@@ -149,14 +151,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="Low priority" />
+                        android:text="@string/low_priority" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_priority_high"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="High priority" />
+                        android:text="@string/high_priority" />
 
                 </com.google.android.material.chip.ChipGroup>
 
@@ -174,7 +176,8 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/scroll_view_create_goal"
-            app:layout_constraintVertical_bias="0.964" />
+            app:layout_constraintVertical_bias="0.964"
+            android:onClick="@{() -> viewModel.onButtonClicked()}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

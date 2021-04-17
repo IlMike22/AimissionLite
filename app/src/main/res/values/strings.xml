@@ -15,11 +15,5 @@
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.
     -->
-    <string name="hello_world">Hello Square World!</string>
-    <string name="chip_genre_partnership_text">Partnership</string>
-    <string name="chip_genre_socialising_text">Socialising</string>
-    <string name="chip_genre_health_text">Health</string>
-    <string name="chip_genre_money_text">Money</string>
-    <string name="chip_genre_fittness_text">Fittness</string>
-    <string name="chip_genre_business_text">Business</string>
+
 </resources>
