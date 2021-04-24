@@ -57,6 +57,7 @@
                     android:autofillHints="@string/edit_text_description_hint"
                     android:hint="@string/edit_text_description_hint"
                     android:inputType="text"
+                    android:text="@{viewModel.goalDescription}"
                     app:layout_constraintBottom_toTopOf="@id/chip_group_genre"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_text_title" />
@@ -80,7 +81,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_text_description"
-                    app:singleSelection="true">
+                    app:singleSelection="true"
+                    android:getCheckedItem="@{viewModel.selectedChipGenre}">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_genre_business"
@@ -144,7 +146,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textview_header_priority"
-                    app:singleSelection="true">
+                    app:singleSelection="true"
+                    android:getCheckedItem="@{viewModel.selectedChipPriority}">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_priority_low"

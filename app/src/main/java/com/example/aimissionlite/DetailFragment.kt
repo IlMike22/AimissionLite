@@ -27,13 +27,11 @@ import com.google.android.material.chip.ChipGroup
 import com.example.aimissionlite.databinding.FragmentDetailBinding
 
 class DetailFragment : IDetailFragment, Fragment() {
-    private var choosenGenre: Chip? = null
-    private var choosenPriority: Chip? = null
-
     private val viewModel: DetailViewModel by viewModels {
         DetailViewModelFactory(
-            resources,
-            (this.activity?.application as AimissionApplication).repository
+            resources = resources,
+            repository = (this.activity?.application as AimissionApplication).repository,
+            view = this
         )
     }
 
@@ -54,15 +52,6 @@ class DetailFragment : IDetailFragment, Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Observer live data // one part of the 2 way binding
-        // in this case our vm can change a live data property and the layout will react
-//        val goalTitleObserver = Observer<String> { goalTitle ->
-//            var goalTitleEditText = view?.findViewById<EditText>(R.id.edit_text_title)
-//            //goalTitleEditText.text = SpannableStringBuilder(goalTitle)
-//        }
-//
-//        viewModel.goalTitle.observe(viewLifecycleOwner,goalTitleObserver)
-
         val chipGroupGenre =
             view.findViewById<ChipGroup>(R.id.chip_group_genre) // todo use data-binding
         val chipGroupPriority =
@@ -71,35 +60,13 @@ class DetailFragment : IDetailFragment, Fragment() {
 
 
         chipGroupPriority.setOnCheckedChangeListener { group, checkedId ->
-            choosenPriority = view.findViewById(checkedId) // todo use data-binding
-            Toast.makeText(activity, "${choosenPriority?.text} clicked", Toast.LENGTH_SHORT)
-                .show()
+//            choosenPriority = view.findViewById(checkedId) // todo use data-binding
+//            Toast.makeText(activity, "${choosenPriority?.text} clicked", Toast.LENGTH_SHORT)
+//                .show()
         }
 
 //        view.findViewById<Button>(R.id.button_save_goal).setOnClickListener {
-//            val goalTitle = view.findViewById<EditText>(R.id.edit_text_title).text.toString()
-//            val goalDescription =
-//                view.findViewById<EditText>(R.id.edit_text_description).text.toString()
-//
-//            val currentDate = viewModel.getCurrentDate()
-//
-//            val newGoal = Goal(
-//                id = 0,
-//                title = goalTitle,
-//                description = goalDescription,
-//                creationDate = currentDate,
-//                changeDate = currentDate,
-//                isRepeated = false,
-//                genre = choosenGenre.toGenre(),
-//                status = Status.UNKOWN,
-//                priority = choosenPriority.toPriority()
-//            )
-//            addGoal(newGoal)
-//
-//            val bundle =
-//                bundleOf(resources.getString(R.string.bundle_argument_goal_title) to goalTitle)
-//            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment, bundle)
-//        }
+
     }
 
     override fun addGoal(goal: Goal) {
@@ -107,22 +74,6 @@ class DetailFragment : IDetailFragment, Fragment() {
     }
 
     companion object {
-        private fun Chip?.toGenre(): Genre =
-            when (this?.id) {
-                R.id.chip_genre_business -> Genre.BUSINESS
-                R.id.chip_genre_socialising -> Genre.SOCIALISING
-                R.id.chip_genre_fittness -> Genre.FITTNESS
-                R.id.chip_genre_money -> Genre.MONEY
-                R.id.chip_genre_partnership -> Genre.PARTNERSHIP
-                R.id.chip_genre_health -> Genre.HEALTH
-                else -> Genre.UNKNOWN
-            }
 
-        private fun Chip?.toPriority(): Priority =
-            when (this?.id) {
-                R.id.chip_priority_low -> Priority.LOW
-                R.id.chip_priority_high -> Priority.HIGH
-                else -> Priority.NORMAL
-            }
     }
 }
