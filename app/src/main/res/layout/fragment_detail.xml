@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="viewModel"
             type="com.example.aimissionlite.DetailViewModel" />
@@ -44,7 +46,7 @@
                     android:autofillHints="@string/edit_text_title_hint"
                     android:hint="@string/edit_text_title_hint"
                     android:inputType="text"
-                    android:text="@={viewModel.goalTitle}"
+                    android:text="@={viewModel.view.goalTitle}"
                     app:layout_constraintBottom_toTopOf="@id/edit_text_description"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textview_title" />
@@ -57,8 +59,8 @@
                     android:autofillHints="@string/edit_text_description_hint"
                     android:hint="@string/edit_text_description_hint"
                     android:inputType="text"
-                    android:text="@{viewModel.goalDescription}"
-                    app:layout_constraintBottom_toTopOf="@id/chip_group_genre"
+                    android:text="@{viewModel.view.goalDescription}"
+                    app:layout_constraintBottom_toTopOf="@id/chipgroup_genre"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_text_title" />
 
@@ -71,18 +73,17 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/edit_text_description" />
 
-
                 <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chip_group_genre"
+                    android:id="@+id/chipgroup_genre"
                     style="@style/common_chip_group_style"
                     android:layout_width="match_parent"
                     android:layout_height="111dp"
+                    android:getSelectedItem="@{viewModel.view.selectedChipGenre}"
                     app:layout_constraintBottom_toTopOf="@+id/chip_group_priority"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_text_description"
-                    app:singleSelection="true"
-                    android:getCheckedItem="@{viewModel.selectedChipGenre}">
+                    app:singleSelection="true">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_genre_business"
@@ -135,19 +136,19 @@
                     android:layout_height="wrap_content"
                     android:text="@string/choose_priority"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/chip_group_genre" />
+                    app:layout_constraintTop_toBottomOf="@id/chipgroup_genre" />
 
                 <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chip_group_priority"
+                    android:id="@+id/chipgroup_priority"
                     style="@style/common_chip_group_style"
                     android:layout_width="match_parent"
                     android:layout_height="111dp"
+                    android:getSelectedItem="@{viewModel.view.selectedChipPriority}"
                     app:layout_constraintBottom_toTopOf="@+id/button_save_goal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textview_header_priority"
-                    app:singleSelection="true"
-                    android:getCheckedItem="@{viewModel.selectedChipPriority}">
+                    app:singleSelection="true">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_priority_low"
@@ -165,6 +166,7 @@
 
                 </com.google.android.material.chip.ChipGroup>
 
+
             </LinearLayout>
 
         </ScrollView>
@@ -173,14 +175,14 @@
             android:id="@+id/button_save_goal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.buttonText}"
+            android:onClick="@{() -> viewModel.onButtonClicked()}"
+            android:text="@{viewModel.view.buttonText}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/scroll_view_create_goal"
-            app:layout_constraintVertical_bias="0.964"
-            android:onClick="@{() -> viewModel.onButtonClicked()}"/>
+            app:layout_constraintVertical_bias="0.964" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
