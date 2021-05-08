@@ -1,17 +1,22 @@
 package com.example.aimissionlite
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import com.example.aimissionlite.DetailViewModel.DetailViewModelFactory
 import com.example.aimissionlite.databinding.FragmentDetailBinding
+import com.example.aimissionlite.models.domain.GoalValidationStatusCode
 
 class DetailFragment : IDetailFragment, Fragment() {
+    var detailFragment: DetailFragment? = null
+
     override val goalTitle: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
     }
@@ -60,6 +65,41 @@ class DetailFragment : IDetailFragment, Fragment() {
         buttonText.value = text
     }
 
+    override fun showValidationResult(statusCode: GoalValidationStatusCode) {
+        when (statusCode) {
+            GoalValidationStatusCode.NO_TITLE -> Toast.makeText(
+                this.context,
+                getString(R.string.fragment_detail_goal_validation_status_no_title),
+                Toast.LENGTH_SHORT
+            ).show()
+            GoalValidationStatusCode.NO_DESCRIPTION -> Toast.makeText(
+                this.context,
+                getString(R.string.fragment_detail_goal_validation_status_no_description),
+                Toast.LENGTH_SHORT
+            ).show()
+            GoalValidationStatusCode.NO_GENRE -> Toast.makeText(
+                this.context,
+                getString(R.string.fragment_detail_goal_validation_status_no_genre),
+                Toast.LENGTH_SHORT
+            ).show()
+            else -> Toast.makeText(
+                this.context,
+                getString(R.string.fragment_detail_goal_validation_status_success),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    override fun hideKeyboard() {
+        try {
+            (activity as MainActivity).hideKeyboard()
+        } catch (error: Throwable) {
+            Log.e(
+                "AimissionLite",
+                "DetailFragment: Unable to call activity for hiding keyboard. Details: $error")
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,6 +110,8 @@ class DetailFragment : IDetailFragment, Fragment() {
 
         binding.setVariable(BR.viewModel, viewModel) // binding the view model and execute this
         binding.executePendingBindings()
+
+        detailFragment = this
 
         return binding.getRoot()
     }

@@ -22,4 +22,8 @@
         <item name="android:layout_marginBottom">@dimen/margin_standard</item>
     </style>
 
+    <style name="fragment_main_button_create_goal">
+        <item name="android:layout_marginBottom">@dimen/margin_standard_double</item>
+    </style>
+
 </resources>

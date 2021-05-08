@@ -1,10 +1,13 @@
 package com.example.aimissionlite
 
+import android.app.Activity
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.databinding.DataBindingUtil
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +30,17 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    fun hideKeyboard() {
+        try {
+            val inputMethodService =
+                this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            val view = View(this)
+            inputMethodService.hideSoftInputFromWindow(view.windowToken, 0)
+        } catch (error: Throwable) {
+            Log.e("AimissionLite", "Unable to close keyboard. Details: ${error.message}")
         }
     }
 }

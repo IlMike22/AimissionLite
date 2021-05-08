@@ -5,12 +5,8 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.*
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.aimissionlite.data.GoalRepository
-import com.example.aimissionlite.models.domain.Genre
-import com.example.aimissionlite.models.domain.Goal
-import com.example.aimissionlite.models.domain.Priority
-import com.example.aimissionlite.models.domain.Status
+import com.example.aimissionlite.models.domain.*
 import kotlinx.coroutines.launch
-import java.lang.IllegalArgumentException
 import java.time.LocalDateTime
 
 class DetailViewModel(
@@ -20,17 +16,19 @@ class DetailViewModel(
 ) : ViewModel() {
 
     init {
-        view.buttonText.value = "Fertig"
+        view.buttonText.value = resources.getString(R.string.fragment_detail_add_goal_button_text)
         val allGoals: LiveData<List<Goal>> = repository.allGoals.asLiveData()
     }
 
     fun onButtonClicked() {
         val currentDate = getCurrentDate()
 
+        view.hideKeyboard()
+
         val newGoal = Goal(
             id = 0,
-            title = view.goalTitle.value ?: "",
-            description = view.goalDescription.value ?: "",
+            title = view.goalTitle.value.orEmpty(),
+            description = view.goalDescription.value.orEmpty(),
             creationDate = currentDate,
             changeDate = currentDate,
             isRepeated = false,
@@ -39,21 +37,39 @@ class DetailViewModel(
             priority = view.selectedChipPriority.toPriority()
         )
 
-        println("!!! do we have now all the data in $newGoal?")
+        val validationStatusCode = isGoalValid(newGoal)
 
-        addGoal(newGoal)
+        if (validationStatusCode == GoalValidationStatusCode.OK) {
+            addGoal(newGoal)
+            navigateToMainFragment()
+        }
 
-        val bundle =
-            bundleOf(resources.getString(R.string.bundle_argument_goal_title) to view.goalTitle.value)
-        findNavController(view).navigate(R.id.action_SecondFragment_to_FirstFragment, bundle)
-
+        view.showValidationResult(validationStatusCode)
     }
+
+    private fun getCurrentDate(): String = LocalDateTime.now().toString()
 
     private fun addGoal(goal: Goal) = viewModelScope.launch {
         repository.insert(goal)
     }
 
-    fun getCurrentDate(): String = LocalDateTime.now().toString()
+    private fun isGoalValid(goal: Goal): GoalValidationStatusCode {
+        goal.apply {
+            return when {
+                title.isBlank() -> GoalValidationStatusCode.NO_TITLE
+                description.isBlank() -> GoalValidationStatusCode.NO_DESCRIPTION
+                genre.isGenreNotSet() -> GoalValidationStatusCode.NO_GENRE
+                else -> GoalValidationStatusCode.OK
+            }
+        }
+    }
+
+
+    private fun navigateToMainFragment() {
+        val bundle =
+            bundleOf(resources.getString(R.string.bundle_argument_goal_title) to view.goalTitle.value)
+        findNavController(view).navigate(R.id.action_SecondFragment_to_FirstFragment, bundle)
+    }
 
     companion object {
         private fun MutableLiveData<Int>.toGenre(): Genre =
@@ -87,5 +103,12 @@ class DetailViewModel(
             }
             throw IllegalArgumentException("Unknown viewmodel class")
         }
+    }
+
+    private fun Genre.isGenreNotSet(): Boolean {
+        if (this == Genre.UNKNOWN) {
+            return true
+        }
+        return false
     }
 }

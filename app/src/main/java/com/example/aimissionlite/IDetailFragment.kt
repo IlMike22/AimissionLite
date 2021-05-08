@@ -1,6 +1,7 @@
 package com.example.aimissionlite
 
 import androidx.lifecycle.MutableLiveData
+import com.example.aimissionlite.models.domain.GoalValidationStatusCode
 
 interface IDetailFragment {
     val selectedChipPriority: MutableLiveData<Int>
@@ -14,4 +15,7 @@ interface IDetailFragment {
     fun setGoalTitle(title: String)
     fun setGoalDescription(text: String)
     fun setButtonText(text: String)
+
+    fun showValidationResult(validationStatusCode: GoalValidationStatusCode)
+    fun hideKeyboard()
 }

@@ -51,6 +51,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textview_title" />
 
+                <!--IMPORTANT: The "=" for android:text leads to observe user input for this editText and we can get it in vm!-->
                 <EditText
                     android:id="@+id/edit_text_description"
                     style="@style/edit_text"
@@ -59,7 +60,7 @@
                     android:autofillHints="@string/edit_text_description_hint"
                     android:hint="@string/edit_text_description_hint"
                     android:inputType="text"
-                    android:text="@{viewModel.view.goalDescription}"
+                    android:text="@={viewModel.view.goalDescription}"
                     app:layout_constraintBottom_toTopOf="@id/chipgroup_genre"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_text_title" />
@@ -90,42 +91,42 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="@string/chip_genre_business_text" />
+                        android:text="@string/fagment_detail_chip_genre_business_text" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_genre_fittness"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="@string/chip_genre_fittness_text" />
+                        android:text="@string/fagment_detail_chip_genre_fittness_text" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_genre_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="@string/chip_genre_money_text" />
+                        android:text="@string/fagment_detail_chip_genre_money_text" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_genre_partnership"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="@string/chip_genre_partnership_text" />
+                        android:text="@string/fragment_detail_chip_genre_partnership_text" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_genre_socialising"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="@string/chip_genre_socialising_text" />
+                        android:text="@string/fragment_detail_chip_genre_socialising_text" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_genre_health"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="@string/chip_genre_health_text" />
+                        android:text="@string/fagment_detail_chip_genre_health_text" />
 
                 </com.google.android.material.chip.ChipGroup>
 
@@ -173,6 +174,7 @@
 
         <Button
             android:id="@+id/button_save_goal"
+            style="@style/fragment_detail_button_save_goal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{() -> viewModel.onButtonClicked()}"
