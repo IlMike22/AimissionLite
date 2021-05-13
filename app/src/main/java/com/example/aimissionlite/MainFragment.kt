@@ -1,20 +1,19 @@
 package com.example.aimissionlite
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class MainFragment : Fragment() {
+class MainFragment : IMainFragment, Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,7 +25,8 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (arguments != null) {
-            val goalTitle = arguments?.getString(resources.getString(R.string.bundle_argument_goal_title))
+            val goalTitle =
+                arguments?.getString(resources.getString(R.string.bundle_argument_goal_title))
             Toast.makeText(activity, "Goal $goalTitle successfully created!", Toast.LENGTH_SHORT)
                 .show()
         }
@@ -41,7 +41,11 @@ class MainFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
         val viewModel: MainViewModel by viewModels {
-            MainViewModel.MainViewModelFactory((this.activity?.application as AimissionApplication).repository)
+            MainViewModel.MainViewModelFactory(
+                repository = (this.activity?.application as AimissionApplication).repository,
+                view = this,
+                resources = resources
+            )
         }
 
         viewModel.allGoals.observe(viewLifecycleOwner, Observer { goals ->

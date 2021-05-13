@@ -16,5 +16,7 @@ class GoalRepository(private val goalDao: IGoalDao) {
         goalDao.insert(goal)
     }
 
+//    fun getGoal(id: Int): Flow<Goal> =
+//        goalDao.getGoal(id)
 
 }

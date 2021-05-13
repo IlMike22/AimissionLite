@@ -1,5 +1,6 @@
 package com.example.aimissionlite
 
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.example.aimissionlite.models.domain.GoalValidationStatusCode
 
@@ -17,5 +18,5 @@ interface IDetailFragment {
     fun setButtonText(text: String)
 
     fun showValidationResult(validationStatusCode: GoalValidationStatusCode)
-    fun hideKeyboard()
+    fun hideKeyboard(currentFocusedView: View?)
 }

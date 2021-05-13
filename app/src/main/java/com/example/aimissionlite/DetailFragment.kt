@@ -90,9 +90,9 @@ class DetailFragment : IDetailFragment, Fragment() {
         }
     }
 
-    override fun hideKeyboard() {
+    override fun hideKeyboard(currentFocusedView:View?) {
         try {
-            (activity as MainActivity).hideKeyboard()
+            (activity as MainActivity).hideKeyboard(currentFocusedView)
         } catch (error: Throwable) {
             Log.e(
                 "AimissionLite",

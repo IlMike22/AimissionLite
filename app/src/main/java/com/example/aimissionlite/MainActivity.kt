@@ -33,12 +33,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun hideKeyboard() {
+    fun hideKeyboard(currentFocusedView:View?) {
         try {
             val inputMethodService =
                 this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-            val view = View(this)
-            inputMethodService.hideSoftInputFromWindow(view.windowToken, 0)
+            inputMethodService.hideSoftInputFromWindow(currentFocusedView?.windowToken, 0)
         } catch (error: Throwable) {
             Log.e("AimissionLite", "Unable to close keyboard. Details: ${error.message}")
         }

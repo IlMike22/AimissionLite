@@ -23,8 +23,6 @@ class DetailViewModel(
     fun onButtonClicked() {
         val currentDate = getCurrentDate()
 
-        view.hideKeyboard()
-
         val newGoal = Goal(
             id = 0,
             title = view.goalTitle.value.orEmpty(),
@@ -64,8 +62,8 @@ class DetailViewModel(
         }
     }
 
-
     private fun navigateToMainFragment() {
+        view.hideKeyboard(view.activity?.currentFocus)
         val bundle =
             bundleOf(resources.getString(R.string.bundle_argument_goal_title) to view.goalTitle.value)
         findNavController(view).navigate(R.id.action_SecondFragment_to_FirstFragment, bundle)

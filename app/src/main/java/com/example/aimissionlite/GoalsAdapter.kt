@@ -44,7 +44,7 @@ class GoalsAdapter : ListAdapter<Goal, GoalsAdapter.GoalViewHolder>(GoalComparat
 
         override fun areContentsTheSame(oldItem: Goal, newItem: Goal): Boolean {
             return oldItem.title == newItem.title &&
-                    oldItem.description == newItem.description // todo add the missing values of goal here later
+                    oldItem.description == newItem.description
         }
     }
 }
