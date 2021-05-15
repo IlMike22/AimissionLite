@@ -31,15 +31,6 @@ class MainFragment : IMainFragment, Fragment() {
                 .show()
         }
 
-        view.findViewById<Button>(R.id.button_first).setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        }
-
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview_goals)
-        val goalAdapter = GoalsAdapter()
-        recyclerView.adapter = goalAdapter
-        recyclerView.layoutManager = LinearLayoutManager(view.context)
-
         val viewModel: MainViewModel by viewModels {
             MainViewModel.MainViewModelFactory(
                 repository = (this.activity?.application as AimissionApplication).repository,
@@ -47,6 +38,15 @@ class MainFragment : IMainFragment, Fragment() {
                 resources = resources
             )
         }
+
+        view.findViewById<Button>(R.id.button_first).setOnClickListener {
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        }
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview_goals)
+        val goalAdapter = GoalsAdapter(viewModel)
+        recyclerView.adapter = goalAdapter
+        recyclerView.layoutManager = LinearLayoutManager(view.context)
 
         viewModel.allGoals.observe(viewLifecycleOwner, Observer { goals ->
             goals?.let { goals ->

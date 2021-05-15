@@ -1,13 +1,11 @@
 package com.example.aimissionlite
 
 import android.content.res.Resources
-import android.view.View
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
 import com.example.aimissionlite.data.GoalRepository
 import com.example.aimissionlite.models.domain.Goal
+import com.example.aimissionlite.models.domain.Status
+import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val resources: Resources,
@@ -16,19 +14,24 @@ class MainViewModel(
 ) : ViewModel() {
     val allGoals: LiveData<List<Goal>> = repository.allGoals.asLiveData()
 
-    fun onGoalClicked(view: View) {
-        println("go on here!")
-//        val goal: LiveData<Goal> = repository.getGoal(0).asLiveData() // todo remove that 0 later
-//        val updatedGoal = goal.value?.copy(
-//            status = Status.DONE
-//        )
-//
-//        if (updatedGoal != null) { // todo maybe it is smarter to diretly update the goal instead of get, edit and save again
-//            viewModelScope.launch {
-//                repository.insert(updatedGoal)
-//            }
-//        }
+    fun onGoalStatusClicked(goal: Goal?) {
+        goal?.apply {
+            viewModelScope.launch {
+                repository.updateStatus(
+                    id = goal.id,
+                    status = getNewGoalStatus(goal.status)
+                )
+            }
+        } ?: println("!!! Goal is null. Cannot update goal status.")
     }
+
+    private fun getNewGoalStatus(oldStatus: Status): Status =
+        when (oldStatus) {
+            Status.DONE -> Status.TODO
+            Status.TODO -> Status.IN_PROGRESS
+            Status.IN_PROGRESS -> Status.DONE
+            else -> Status.UNKOWN
+        }
 
     class MainViewModelFactory(
         private val repository: GoalRepository,

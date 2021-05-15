@@ -9,8 +9,8 @@ interface IGoalDao {
     @Query("SELECT * FROM goal_table")
     fun getGoals(): Flow<List<Goal>>
 
-//    @Query("SELECT * FROM goal_table WHERE id = id")
-//    fun getGoal(id: Int): Flow<Goal>
+    @Query("UPDATE goal_table SET status = :status WHERE id = :id")
+    suspend fun updateStatus(id: Int, status:String)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(goal: Goal)

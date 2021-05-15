@@ -3,15 +3,20 @@ package com.example.aimissionlite
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aimissionlite.models.domain.Goal
 
-class GoalsAdapter : ListAdapter<Goal, GoalsAdapter.GoalViewHolder>(GoalComparator()) {
+class GoalsAdapter(private val viewModel: MainViewModel) :
+    ListAdapter<Goal, GoalsAdapter.GoalViewHolder>(GoalComparator()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GoalViewHolder {
-        return GoalViewHolder.create(parent)
+        return GoalViewHolder.create(
+            parent = parent,
+            viewModel = viewModel
+        )
     }
 
     override fun onBindViewHolder(holder: GoalViewHolder, position: Int) {
@@ -19,20 +24,32 @@ class GoalsAdapter : ListAdapter<Goal, GoalsAdapter.GoalViewHolder>(GoalComparat
         holder.bind(currentGoal)
     }
 
-    class GoalViewHolder(goalView: View) : RecyclerView.ViewHolder(goalView) {
+    class GoalViewHolder(goalView: View, private val viewModel: MainViewModel) :
+        RecyclerView.ViewHolder(goalView) {
         private val goalTitle: TextView = goalView.findViewById(R.id.goal_title)
         private val goalDescription: TextView = goalView.findViewById(R.id.goal_description)
+        private val goalButtonStatusChange: ImageButton =
+            goalView.findViewById(R.id.goal_button_status_change)
 
         fun bind(goal: Goal?) {
             goalTitle.text = goal?.title
             goalDescription.text = goal?.description
+
+            goalButtonStatusChange.setOnClickListener { view ->
+                println("!!! on click called with view $view")
+                viewModel.onGoalStatusClicked(goal)
+
+            }
         }
 
         companion object {
-            fun create(parent: ViewGroup): GoalViewHolder {
+            fun create(parent: ViewGroup, viewModel: MainViewModel): GoalViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
                     .inflate(R.layout.goal_item, parent, false)
-                return GoalViewHolder(view)
+                return GoalViewHolder(
+                    goalView = view,
+                    viewModel = viewModel
+                )
             }
         }
     }
