@@ -18,21 +18,10 @@ class GoalRepository(private val goalDao: IGoalDao) {
     }
 
     @WorkerThread
-    suspend fun updateStatus (id: Int, status:Status) {
+    suspend fun updateStatus(id: Int, status: Status) {
         goalDao.updateStatus(
             id = id,
             status = status.toStatusData()
         )
-    }
-
-    companion object {
-        private fun Status.toStatusData():String = // todo this code is redundant since always available in Converters class
-            when (this) {
-                Status.TODO -> "TODO"
-                Status.IN_PROGRESS -> "IN_PROGRESS"
-                Status.DONE -> "DONE"
-                Status.DEPRECATED -> "DEPRECATED"
-                Status.UNKOWN -> "UNKNOWN"
-            }
     }
 }

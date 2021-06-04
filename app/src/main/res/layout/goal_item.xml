@@ -52,10 +52,10 @@
 
                 <ImageButton
                     android:id="@+id/goal_button_status_change"
+                    android:contentDescription="@string/goal_item_image_button_status_changed_content_description"
                     style="@style/GoalImageButtonStatusChange"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="onGoalButtonStatusChangedClicked}"
                     android:src="@drawable/ic_launcher_background" />
 
             </LinearLayout>

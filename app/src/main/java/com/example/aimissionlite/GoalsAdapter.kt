@@ -1,5 +1,6 @@
 package com.example.aimissionlite
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aimissionlite.models.domain.Goal
+import com.example.aimissionlite.models.domain.Status
 
-class GoalsAdapter(private val viewModel: MainViewModel) :
+class GoalsAdapter(
+    private val viewModel: MainViewModel,
+    private val resources: Resources
+) :
     ListAdapter<Goal, GoalsAdapter.GoalViewHolder>(GoalComparator()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GoalViewHolder {
         return GoalViewHolder.create(
@@ -21,7 +26,7 @@ class GoalsAdapter(private val viewModel: MainViewModel) :
 
     override fun onBindViewHolder(holder: GoalViewHolder, position: Int) {
         val currentGoal = getItem(position)
-        holder.bind(currentGoal)
+        holder.bind(currentGoal, resources)
     }
 
     class GoalViewHolder(goalView: View, private val viewModel: MainViewModel) :
@@ -31,9 +36,15 @@ class GoalsAdapter(private val viewModel: MainViewModel) :
         private val goalButtonStatusChange: ImageButton =
             goalView.findViewById(R.id.goal_button_status_change)
 
-        fun bind(goal: Goal?) {
+        fun bind(goal: Goal?, resources:Resources) {
             goalTitle.text = goal?.title
             goalDescription.text = goal?.description
+            when (goal?.status) {
+                Status.TODO -> goalButtonStatusChange.setImageDrawable(resources.getDrawable(R.drawable.ic_launcher_background_red))
+                Status.IN_PROGRESS -> goalButtonStatusChange.setImageDrawable(resources.getDrawable(R.drawable.ic_launcher_background_yellow))
+                Status.DONE -> goalButtonStatusChange.setImageDrawable(resources.getDrawable(R.drawable.ic_launcher_background_green))
+                else -> println("!! Unknown status. Dont know which color the button should has.")
+            }
 
             goalButtonStatusChange.setOnClickListener { view ->
                 println("!!! on click called with view $view")

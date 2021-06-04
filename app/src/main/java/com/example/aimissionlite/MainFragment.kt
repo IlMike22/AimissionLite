@@ -12,6 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.aimissionlite.models.domain.Status
+import kotlinx.android.synthetic.main.goal_item.*
 
 class MainFragment : IMainFragment, Fragment() {
     override fun onCreateView(
@@ -44,7 +46,12 @@ class MainFragment : IMainFragment, Fragment() {
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview_goals)
-        val goalAdapter = GoalsAdapter(viewModel)
+
+        val goalAdapter = GoalsAdapter(
+            viewModel = viewModel,
+            resources = resources
+        )
+
         recyclerView.adapter = goalAdapter
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
