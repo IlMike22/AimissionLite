@@ -22,4 +22,7 @@
     <style name="Theme.AimissionLite.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.AimissionLite.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="TestTheme" parent="@style/Theme.MaterialComponents.Light.NoActionBar"></style>
 </resources>

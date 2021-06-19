@@ -7,10 +7,10 @@ import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Status
 import kotlinx.coroutines.launch
 
-class MainViewModel(
+class LandingPageViewModel(
     private val resources: Resources,
     private val repository: GoalRepository,
-    val view: MainFragment
+    val view: LandingPageFragment
 ) : ViewModel() {
     val allGoals: LiveData<List<Goal>> = repository.allGoals.asLiveData()
 
@@ -35,13 +35,13 @@ class MainViewModel(
 
     class MainViewModelFactory(
         private val repository: GoalRepository,
-        private val view: MainFragment,
+        private val view: LandingPageFragment,
         private val resources: Resources
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(LandingPageViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return MainViewModel(resources, repository, view) as T
+                return LandingPageViewModel(resources, repository, view) as T
             }
             throw IllegalArgumentException("Unknown viewmodel class")
         }

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,15 +11,14 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.aimissionlite.models.domain.Status
-import kotlinx.android.synthetic.main.goal_item.*
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
-class MainFragment : IMainFragment, Fragment() {
+class LandingPageFragment : ILandingPageFragment, Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        return inflater.inflate(R.layout.fragment_landing_page, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,15 +31,16 @@ class MainFragment : IMainFragment, Fragment() {
                 .show()
         }
 
-        val viewModel: MainViewModel by viewModels {
-            MainViewModel.MainViewModelFactory(
+        val viewModel: LandingPageViewModel by viewModels {
+            LandingPageViewModel.MainViewModelFactory(
                 repository = (this.activity?.application as AimissionApplication).repository,
                 view = this,
                 resources = resources
             )
         }
 
-        view.findViewById<Button>(R.id.button_first).setOnClickListener {
+        val fabAddGoal = view.findViewById<ExtendedFloatingActionButton>(R.id.fab_add_goal)
+        fabAddGoal.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
 
@@ -54,6 +53,7 @@ class MainFragment : IMainFragment, Fragment() {
 
         recyclerView.adapter = goalAdapter
         recyclerView.layoutManager = LinearLayoutManager(view.context)
+
 
         viewModel.allGoals.observe(viewLifecycleOwner, Observer { goals ->
             goals?.let { goals ->

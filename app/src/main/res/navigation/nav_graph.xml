@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.aimissionlite.MainFragment"
+        android:name="com.example.aimissionlite.LandingPageFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_main">
+        tools:layout="@layout/fragment_landing_page">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"

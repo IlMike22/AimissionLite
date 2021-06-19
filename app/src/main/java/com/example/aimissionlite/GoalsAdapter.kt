@@ -13,7 +13,7 @@ import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Status
 
 class GoalsAdapter(
-    private val viewModel: MainViewModel,
+    private val viewModel: LandingPageViewModel,
     private val resources: Resources
 ) :
     ListAdapter<Goal, GoalsAdapter.GoalViewHolder>(GoalComparator()) {
@@ -29,7 +29,7 @@ class GoalsAdapter(
         holder.bind(currentGoal, resources)
     }
 
-    class GoalViewHolder(goalView: View, private val viewModel: MainViewModel) :
+    class GoalViewHolder(goalView: View, private val viewModel: LandingPageViewModel) :
         RecyclerView.ViewHolder(goalView) {
         private val goalTitle: TextView = goalView.findViewById(R.id.goal_title)
         private val goalDescription: TextView = goalView.findViewById(R.id.goal_description)
@@ -54,7 +54,7 @@ class GoalsAdapter(
         }
 
         companion object {
-            fun create(parent: ViewGroup, viewModel: MainViewModel): GoalViewHolder {
+            fun create(parent: ViewGroup, viewModel: LandingPageViewModel): GoalViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
                     .inflate(R.layout.goal_item, parent, false)
                 return GoalViewHolder(
