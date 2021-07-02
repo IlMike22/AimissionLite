@@ -3,8 +3,9 @@
     <string name="action_settings">Settings</string>
     <string name="action_info">Info</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="landing_page_fragment_label">LandingPage Fragment</string>
+    <string name="add_goal_fragment_label">AddGoal Fragment</string>
+    <string name="info_fragment_label">Info Fragment</string>
     <string name="previous">Previous</string>
     <string name="bundle_argument_goal_title">goal_title</string>
 

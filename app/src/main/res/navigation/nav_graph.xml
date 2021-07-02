@@ -3,31 +3,47 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/LandingPageFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/LandingPageFragment"
         android:name="com.example.aimissionlite.LandingPageFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/landing_page_fragment_label"
         tools:layout="@layout/fragment_landing_page">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_LandingPageFragment_to_AddGoalFragment"
+            app:destination="@id/AddGoalFragment" />
+
+        <action
+            android:id="@+id/action_LandingPageFragment_to_InfoFragment"
+            app:destination="@id/InfoFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
+        android:id="@+id/AddGoalFragment"
         android:name="com.example.aimissionlite.DetailFragment"
-        android:label="@string/second_fragment_label"
+        android:label="@string/add_goal_fragment_label"
         tools:layout="@layout/fragment_detail">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            app:destination="@id/LandingPageFragment" />
 
         <argument
             android:name="goal_title"
-            app:argType="string"
-            android:defaultValue="Unknown title" />
+            android:defaultValue="Unknown title"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/InfoFragment"
+        android:name="com.example.aimissionlite.InfoFragment"
+        android:label="@string/info_fragment_label"
+        tools:layout="@layout/fragment_info">
+
+        <action
+            android:id="@+id/action_InfoFragment_to_LandingPageFragment"
+            app:destination="@id/LandingPageFragment" />
+
     </fragment>
 </navigation>

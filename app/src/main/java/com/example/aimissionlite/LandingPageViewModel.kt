@@ -2,6 +2,7 @@ package com.example.aimissionlite
 
 import android.content.res.Resources
 import androidx.lifecycle.*
+import androidx.navigation.fragment.findNavController
 import com.example.aimissionlite.data.GoalRepository
 import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Status
@@ -13,6 +14,20 @@ class LandingPageViewModel(
     val view: LandingPageFragment
 ) : ViewModel() {
     val allGoals: LiveData<List<Goal>> = repository.allGoals.asLiveData()
+
+    fun onAddGoalClicked() {
+        view.findNavController().navigate(R.id.action_LandingPageFragment_to_AddGoalFragment)
+    }
+
+    fun onInfoClicked() {
+        // call this navigation pattern to show info fragment
+        println("!!! navigate to info from vm now!!!!")
+        view.findNavController().navigate(R.id.action_LandingPageFragment_to_InfoFragment)
+    }
+
+    fun onSettingsClicked() {
+        // call this navigation pattern to show settings fragment
+    }
 
     fun onGoalStatusClicked(goal: Goal?) {
         goal?.apply {
