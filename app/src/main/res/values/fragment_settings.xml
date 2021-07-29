@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--strings-->
+    <string name="fragment_settings_header_text">Hello settings fragment. Please fill me.</string>
+
+    <!-- styles -->
+    <style name="FragmentSettingsHeader">
+
+    </style>
+</resources>

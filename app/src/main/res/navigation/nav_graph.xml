@@ -18,7 +18,12 @@
         <action
             android:id="@+id/action_LandingPageFragment_to_InfoFragment"
             app:destination="@id/InfoFragment" />
+
+        <action
+            android:id="@+id/action_LandingPageFragment_to_SettingsFragment"
+            app:destination="@id/SettingsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/AddGoalFragment"
         android:name="com.example.aimissionlite.DetailFragment"
@@ -46,4 +51,17 @@
             app:destination="@id/LandingPageFragment" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="com.example.aimissionlite.SettingsFragment"
+        android:label="@string/settings_fragment_label"
+        tools:layout="@layout/fragment_settings">
+
+        <action
+            android:id="@+id/action_SettingsFragment_to_LandingPageFragment"
+            app:destination="@id/LandingPageFragment" />
+
+    </fragment>
+
 </navigation>

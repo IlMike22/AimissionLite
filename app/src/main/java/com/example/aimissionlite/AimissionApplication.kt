@@ -17,4 +17,5 @@ class AimissionApplication : Application() {
     }
 
     val repository by lazy { GoalRepository(database.goalDao()) }
+    val settingsStore by lazy {SettingsRepository()}
 }

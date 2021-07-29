@@ -21,12 +21,14 @@ class LandingPageViewModel(
 
     fun onInfoClicked() {
         // call this navigation pattern to show info fragment
-        println("!!! navigate to info from vm now!!!!")
+        println("!!! navigate to info from vm")
         view.findNavController().navigate(R.id.action_LandingPageFragment_to_InfoFragment)
     }
 
     fun onSettingsClicked() {
         // call this navigation pattern to show settings fragment
+        println("!!! navigate to settings from vm")
+        view.findNavController().navigate(R.id.action_LandingPageFragment_to_SettingsFragment)
     }
 
     fun onGoalStatusClicked(goal: Goal?) {

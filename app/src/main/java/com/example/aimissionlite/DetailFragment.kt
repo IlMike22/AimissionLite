@@ -65,8 +65,8 @@ class DetailFragment : IDetailFragment, Fragment() {
         buttonText.value = text
     }
 
-    override fun showValidationResult(statusCode: GoalValidationStatusCode) {
-        when (statusCode) {
+    override fun showValidationResult(validationStatusCode: GoalValidationStatusCode) {
+        when (validationStatusCode) {
             GoalValidationStatusCode.NO_TITLE -> Toast.makeText(
                 this.context,
                 getString(R.string.fragment_detail_goal_validation_status_no_title),
@@ -113,6 +113,6 @@ class DetailFragment : IDetailFragment, Fragment() {
 
         detailFragment = this
 
-        return binding.getRoot()
+        return binding.root
     }
 }

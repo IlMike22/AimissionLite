@@ -17,7 +17,6 @@ class DetailViewModel(
 
     init {
         view.buttonText.value = resources.getString(R.string.fragment_detail_add_goal_button_text)
-        val allGoals: LiveData<List<Goal>> = repository.allGoals.asLiveData()
     }
 
     fun onButtonClicked() {
