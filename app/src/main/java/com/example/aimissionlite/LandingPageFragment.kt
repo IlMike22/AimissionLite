@@ -13,7 +13,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 class LandingPageFragment : ILandingPageFragment, Fragment() {
     val viewModel: LandingPageViewModel by viewModels {
         LandingPageViewModel.MainViewModelFactory(
-            repository = (this.activity?.application as AimissionApplication).repository,
+            repository = (this.activity?.application as AimissionApplication).goalRepository,
             view = this,
             resources = resources
         )

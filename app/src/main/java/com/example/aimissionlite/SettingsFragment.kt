@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,7 +20,7 @@ class SettingsFragment : ISettingsFragment, Fragment() {
     private val viewModel: SettingsViewModel by viewModels {
         SettingsViewModel.SettingsViewModelFactory(
             resources = resources,
-            repository = (this.activity?.application as AimissionApplication).settingsStore,
+            repository = (this.activity?.application as AimissionApplication).settingsRepository,
             view = this
         )
     }
@@ -43,5 +44,15 @@ class SettingsFragment : ISettingsFragment, Fragment() {
         fragment = this
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val deleteGoalsOnStartupCheckBox =
+            view.findViewById<CheckBox>(R.id.fragment_settings_check_box_delete_goals)
+        deleteGoalsOnStartupCheckBox.setOnClickListener {view ->
+            viewModel.onDeleteGoalsClicked((view as CheckBox).isChecked) // todo maybe critical cast
+        }
     }
 }

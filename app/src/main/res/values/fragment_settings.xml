@@ -2,9 +2,19 @@
 <resources>
     <!--strings-->
     <string name="fragment_settings_header_text">Hello settings fragment. Please fill me.</string>
+    <string name="fragment_settings_button_delete_goals_text">Delete all goals</string>
 
     <!-- styles -->
     <style name="FragmentSettingsHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/spacing_double</item>
+    </style>
 
+    <style name="FragmentSettingsButtonDeleteGoals">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">@string/fragment_settings_button_delete_goals_text</item>
+        <item name="android:layout_margin">@dimen/spacing_triple</item>
     </style>
 </resources>

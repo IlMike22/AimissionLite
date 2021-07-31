@@ -40,7 +40,7 @@ class DetailFragment : IDetailFragment, Fragment() {
     private val viewModel: DetailViewModel by viewModels {
         DetailViewModelFactory(
             resources = resources,
-            repository = (this.activity?.application as AimissionApplication).repository,
+            repository = (this.activity?.application as AimissionApplication).goalRepository,
             view = this
         )
     }

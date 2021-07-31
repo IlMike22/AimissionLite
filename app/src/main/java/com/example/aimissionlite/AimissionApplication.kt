@@ -7,15 +7,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 
 class AimissionApplication : Application() {
-    val applicationScope = CoroutineScope(SupervisorJob())
+    private val applicationScope = CoroutineScope(SupervisorJob())
 
-    val database by lazy {
+    private val database by lazy {
         GoalRoomDatabase.getDatabase(
             context = this,
             scope = applicationScope
         )
     }
 
-    val repository by lazy { GoalRepository(database.goalDao()) }
-    val settingsStore by lazy {SettingsRepository()}
+    val goalRepository by lazy { GoalRepository(database.goalDao()) }
+    val settingsRepository by lazy { SettingsRepository(this) }
 }

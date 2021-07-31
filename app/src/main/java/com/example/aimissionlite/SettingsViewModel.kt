@@ -3,6 +3,8 @@ package com.example.aimissionlite
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
 class SettingsViewModel(
     resources: Resources,
@@ -12,6 +14,13 @@ class SettingsViewModel(
 
     init {
         view.setHeader(resources.getString(R.string.fragment_settings_header_text))
+    }
+
+    fun onDeleteGoalsClicked(isEnabled:Boolean) {
+        println("!!! delete goals button clicked!")
+        viewModelScope.launch {
+            repository.setDeleteGoalsOnStartup(isEnabled)
+        }
     }
 
     class SettingsViewModelFactory(
