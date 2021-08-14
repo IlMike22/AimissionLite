@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.example.aimissionlite.databinding.FragmentSettingsBinding
 
 class SettingsFragment : ISettingsFragment, Fragment() {
@@ -51,8 +52,13 @@ class SettingsFragment : ISettingsFragment, Fragment() {
 
         val deleteGoalsOnStartupCheckBox =
             view.findViewById<CheckBox>(R.id.fragment_settings_check_box_delete_goals)
-        deleteGoalsOnStartupCheckBox.setOnClickListener {view ->
-            viewModel.onDeleteGoalsClicked((view as CheckBox).isChecked) // todo maybe critical cast
+
+        viewModel.isDeleteGoalsOnStartup.observe(viewLifecycleOwner, Observer { isGoalsDeleted ->
+            deleteGoalsOnStartupCheckBox.isChecked = isGoalsDeleted
+        })
+
+        deleteGoalsOnStartupCheckBox.setOnClickListener { checkBoxView ->
+            viewModel.onDeleteGoalsClicked((checkBoxView as CheckBox).isChecked) // todo maybe critical cast
         }
     }
 }

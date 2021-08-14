@@ -1,9 +1,8 @@
 package com.example.aimissionlite
 
 import android.content.res.Resources
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
@@ -11,16 +10,22 @@ class SettingsViewModel(
     val repository: SettingsRepository,
     val view: SettingsFragment
 ) : ViewModel() {
+    val isDeleteGoalsOnStartup: LiveData<Boolean> =
+        repository.getDeleteGoalsOnStartup().asLiveData()
 
     init {
         view.setHeader(resources.getString(R.string.fragment_settings_header_text))
     }
 
-    fun onDeleteGoalsClicked(isEnabled:Boolean) {
+    fun onDeleteGoalsClicked(isEnabled: Boolean) {
         println("!!! delete goals button clicked!")
         viewModelScope.launch {
             repository.setDeleteGoalsOnStartup(isEnabled)
         }
+    }
+
+    fun getSettingsFromDataStore(): Flow<Boolean>{
+        return repository.getDeleteGoalsOnStartup()
     }
 
     class SettingsViewModelFactory(
