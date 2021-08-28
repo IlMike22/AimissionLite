@@ -2,6 +2,8 @@ package com.example.aimissionlite
 
 import android.content.res.Resources
 import androidx.lifecycle.*
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 

@@ -13,7 +13,12 @@
 
         <action
             android:id="@+id/action_LandingPageFragment_to_AddGoalFragment"
-            app:destination="@id/AddGoalFragment" />
+            app:destination="@id/AddGoalFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            />
 
         <action
             android:id="@+id/action_LandingPageFragment_to_InfoFragment"
@@ -32,7 +37,8 @@
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/LandingPageFragment" />
+            app:destination="@id/LandingPageFragment"
+            app:popUpTo="@id/LandingPageFragment"/>
 
         <argument
             android:name="goal_title"

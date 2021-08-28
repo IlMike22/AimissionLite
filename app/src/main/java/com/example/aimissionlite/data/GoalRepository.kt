@@ -17,6 +17,17 @@ class GoalRepository(private val goalDao: IGoalDao) {
         goalDao.insert(goal)
     }
 
+    suspend fun deleteAll(): Boolean {
+        return try {
+            val result = goalDao.deleteAll()
+            println("!! success on deleting all goals? details: $result")
+            true
+        } catch (error: Throwable) {
+            println("!! error while deleting all goals. details: ${error.message}")
+            false
+        }
+    }
+
     @WorkerThread
     suspend fun updateStatus(id: Int, status: Status) {
         goalDao.updateStatus(

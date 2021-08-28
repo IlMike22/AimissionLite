@@ -8,8 +8,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.example.aimissionlite.databinding.FragmentDetailBinding
 import com.example.aimissionlite.databinding.FragmentInfoBinding
+import kotlinx.android.synthetic.main.activity_main.*
 
 class InfoFragment : IInfoFragment, Fragment() {
     var infoFragment: InfoFragment? = null

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--strings-->
-    <string name="fragment_settings_header_text">Hello settings fragment. Please fill me.</string>
-    <string name="fragment_settings_button_delete_goals_text">Delete all goals</string>
+    <string name="fragment_settings_header_text">Adjust Aimission`s behaviour as you like.</string>
+    <string name="fragment_settings_button_delete_goals_text">Delete all goals on startup</string>
 
     <!-- styles -->
     <style name="FragmentSettingsHeader">

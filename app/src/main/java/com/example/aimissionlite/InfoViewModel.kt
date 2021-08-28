@@ -3,20 +3,26 @@ package com.example.aimissionlite
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 
 class InfoViewModel(
-    resources: Resources,
-    val view: InfoFragment
+        private val resources: Resources,
+        val view: InfoFragment
 ) : ViewModel() {
 
     init {
+        setupView()
+    }
+
+    private fun setupView() {
         view.setAuthor(resources.getString(R.string.fragment_info_author_value_text))
         view.setVersionName(resources.getString(R.string.fragment_info_app_version_value_text))
     }
 
     class InfoViewModelFactory(
-        private val resources: Resources,
-        private val view: InfoFragment
+            private val resources: Resources,
+            private val view: InfoFragment
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(InfoViewModel::class.java)) {

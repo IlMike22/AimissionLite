@@ -1,19 +1,26 @@
 package com.example.aimissionlite
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import kotlinx.android.synthetic.main.activity_main.*
 
 class LandingPageFragment : ILandingPageFragment, Fragment() {
     val viewModel: LandingPageViewModel by viewModels {
-        LandingPageViewModel.MainViewModelFactory(
+        LandingPageViewModel.LandingPageViewModelFactory(
             repository = (this.activity?.application as AimissionApplication).goalRepository,
+            landingpageRepository = (this.activity?.application as AimissionApplication).landingPageRepository,
             view = this,
             resources = resources
         )
@@ -28,6 +35,10 @@ class LandingPageFragment : ILandingPageFragment, Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activity?.toolbar?.setupWithNavController(
+            navController = viewModel.navController,
+            configuration = AppBarConfiguration(viewModel.navController.graph)
+        )
         return inflater.inflate(R.layout.fragment_landing_page, container, false)
     }
 
@@ -70,6 +81,10 @@ class LandingPageFragment : ILandingPageFragment, Fragment() {
         recyclerView.adapter = goalAdapter
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
+        // if option "delete goals on startip" is activated, this process will start here and now..
+        if (viewModel.deleteAllGoalsIfEnabled()) {
+            Toast.makeText(context, "Goals were successfully deleted!", Toast.LENGTH_SHORT).show()
+        }
 
         viewModel.allGoals.observe(viewLifecycleOwner, Observer { goals ->
             goals?.let { currentGoals ->
@@ -77,4 +92,10 @@ class LandingPageFragment : ILandingPageFragment, Fragment() {
             }
         })
     }
+
+//    override fun onResume() {
+//        val toolbar = (activity as MainActivity?)?.supportActionBar
+//        toolbar?.setIcon(null)
+//        super.onResume()
+//    }
 }
