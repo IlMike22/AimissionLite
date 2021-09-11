@@ -18,5 +18,4 @@ class AimissionApplication : Application() {
 
     val goalRepository by lazy { GoalRepository(database.goalDao()) }
     val settingsRepository by lazy { SettingsRepository(this) }
-    val landingPageRepository by lazy { LandingPageRepository(this)}
 }

@@ -9,18 +9,20 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.launch
 
 class LandingPageFragment : ILandingPageFragment, Fragment() {
     val viewModel: LandingPageViewModel by viewModels {
         LandingPageViewModel.LandingPageViewModelFactory(
-            repository = (this.activity?.application as AimissionApplication).goalRepository,
-            landingpageRepository = (this.activity?.application as AimissionApplication).landingPageRepository,
+            goalRepository = (this.activity?.application as AimissionApplication).goalRepository,
+            settingsRepository = (this.activity?.application as AimissionApplication).settingsRepository,
             view = this,
             resources = resources
         )
@@ -59,6 +61,30 @@ class LandingPageFragment : ILandingPageFragment, Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        println("!!! set observer (again?)")
+        viewModel.isDeleteAllGoals?.observe(viewLifecycleOwner, { isDeleteAllGoals ->
+            isDeleteAllGoals?.let { deleteGoals ->
+                if (deleteGoals) {
+                    viewModel.viewModelScope.launch {
+                        if (viewModel.deleteAllGoals()) {
+                            Toast.makeText(
+                                context,
+                                "Goals were successfully deleted!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Something went wrong while trying to delete all goals!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            }
+        })
+
+
         if (arguments != null) {
             val goalTitle =
                 arguments?.getString(resources.getString(R.string.bundle_argument_goal_title))
@@ -81,21 +107,11 @@ class LandingPageFragment : ILandingPageFragment, Fragment() {
         recyclerView.adapter = goalAdapter
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-        // if option "delete goals on startip" is activated, this process will start here and now..
-        if (viewModel.deleteAllGoalsIfEnabled()) {
-            Toast.makeText(context, "Goals were successfully deleted!", Toast.LENGTH_SHORT).show()
-        }
-
+        // if option "delete goals on startup" is activated, this process will start here and now..
         viewModel.allGoals.observe(viewLifecycleOwner, Observer { goals ->
             goals?.let { currentGoals ->
                 goalAdapter.submitList(currentGoals)
             }
         })
     }
-
-//    override fun onResume() {
-//        val toolbar = (activity as MainActivity?)?.supportActionBar
-//        toolbar?.setIcon(null)
-//        super.onResume()
-//    }
 }
