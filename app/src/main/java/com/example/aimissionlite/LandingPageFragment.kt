@@ -15,7 +15,9 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_landing_page.*
 import kotlinx.coroutines.launch
 
 class LandingPageFragment : ILandingPageFragment, Fragment() {
@@ -63,8 +65,8 @@ class LandingPageFragment : ILandingPageFragment, Fragment() {
 
         println("!!! set observer (again?)")
         viewModel.isDeleteAllGoals?.observe(viewLifecycleOwner, { isDeleteAllGoals ->
-            isDeleteAllGoals?.let { deleteGoals ->
-                if (deleteGoals) {
+            isDeleteAllGoals?.let { completeGoals ->
+                if (completeGoals) {
                     viewModel.viewModelScope.launch {
                         if (viewModel.deleteAllGoals()) {
                             Toast.makeText(
@@ -83,14 +85,6 @@ class LandingPageFragment : ILandingPageFragment, Fragment() {
                 }
             }
         })
-
-
-        if (arguments != null) {
-            val goalTitle =
-                arguments?.getString(resources.getString(R.string.bundle_argument_goal_title))
-            Toast.makeText(activity, "Goal $goalTitle successfully created!", Toast.LENGTH_SHORT)
-                .show()
-        }
 
         val fabAddGoal = view.findViewById<ExtendedFloatingActionButton>(R.id.fab_add_goal)
         fabAddGoal.setOnClickListener {
@@ -113,5 +107,15 @@ class LandingPageFragment : ILandingPageFragment, Fragment() {
                 goalAdapter.submitList(currentGoals)
             }
         })
+    }
+
+    override fun showDeleteGoalSucceededSnackbar(text: String) {
+        val snackbar = Snackbar.make(landing_page_container,text,Snackbar.LENGTH_LONG)
+        snackbar.setAction("UNDO") {
+            println("!!! revert button clicked!")
+            viewModel.restoreDeletedGoal()
+        }
+
+        snackbar.show()
     }
 }

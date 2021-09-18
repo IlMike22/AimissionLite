@@ -1,5 +1,6 @@
 package com.example.aimissionlite.data
 
+import androidx.annotation.CheckResult
 import androidx.annotation.WorkerThread
 import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Status
@@ -17,6 +18,8 @@ class GoalRepository(private val goalDao: IGoalDao) {
         goalDao.insert(goal)
     }
 
+    @WorkerThread
+    @CheckResult
     suspend fun deleteAll(): Boolean {
         return try {
             val result = goalDao.deleteAll()
@@ -34,5 +37,16 @@ class GoalRepository(private val goalDao: IGoalDao) {
             id = id,
             status = status.toStatusData()
         )
+    }
+
+    @WorkerThread
+    @CheckResult
+    suspend fun deleteGoal(goal: Goal): Boolean {
+        return try {
+            goalDao.deleteGoal(goal)
+            true
+        } catch (exception: Exception) {
+            false
+        }
     }
 }

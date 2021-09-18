@@ -14,4 +14,11 @@ data class Goal(
     val genre: Genre,
     val status: Status,
     val priority: Priority
-)
+) {
+    companion object {
+        val EMPTY = Goal(0, "", "", "", "", false, Genre.UNKNOWN, Status.UNKOWN, Priority.UNKNOWN)
+    }
+}
+
+
+

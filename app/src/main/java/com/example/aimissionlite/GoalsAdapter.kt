@@ -35,6 +35,7 @@ class GoalsAdapter(
         private val goalDescription: TextView = goalView.findViewById(R.id.goal_description)
         private val goalButtonStatusChange: ImageButton =
             goalView.findViewById(R.id.goal_button_status_change)
+        private val goalButtonDeleteGoal:ImageButton = goalView.findViewById(R.id.goal_button_delete_goal)
 
         fun bind(goal: Goal?, resources:Resources) {
             goalTitle.text = goal?.title
@@ -47,9 +48,11 @@ class GoalsAdapter(
             }
 
             goalButtonStatusChange.setOnClickListener { view ->
-                println("!!! on click called with view $view")
                 viewModel.onGoalStatusClicked(goal)
+            }
 
+            goalButtonDeleteGoal.setOnClickListener { view ->
+                viewModel.onGoalDeleteClicked(goal)
             }
         }
 

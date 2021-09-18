@@ -5,6 +5,11 @@
 
     <!-- styles -->
     <style name="GoalImageButtonStatusChange">
-        <item name="android:layout_margin">@dimen/margin_standard</item>
+        <item name="android:layout_margin">@dimen/spacing</item>
     </style>
+
+    <style name="GoalImageButtonDeleteGoal">
+        <item name="android:layout_margin">@dimen/spacing</item>
+    </style>
+
 </resources>

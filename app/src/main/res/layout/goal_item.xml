@@ -19,7 +19,8 @@
             android:id="@+id/goal_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,15 +48,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
+                android:layout_weight="2"
                 android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/goal_button_delete_goal"
+                    style="@style/GoalImageButtonDeleteGoal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{viewModel.deleteGoal()"
+                    android:src="@drawable/ic_baseline_delete_forever"/>
 
                 <ImageButton
                     android:id="@+id/goal_button_status_change"
                     android:contentDescription="@string/goal_item_image_button_status_changed_content_description"
                     style="@style/GoalImageButtonStatusChange"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:src="@drawable/ic_launcher_background" />
 
             </LinearLayout>

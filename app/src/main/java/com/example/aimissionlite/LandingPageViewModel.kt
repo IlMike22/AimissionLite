@@ -7,7 +7,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.aimissionlite.data.GoalRepository
 import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Status
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class LandingPageViewModel(
@@ -18,6 +17,7 @@ class LandingPageViewModel(
     var isDeleteAllGoals: LiveData<Boolean>? = null
     val allGoals: LiveData<List<Goal>> = goalRepository.allGoals.asLiveData()
     val navController: NavController = view.findNavController()
+    private var lastDeletedGoal: Goal = Goal.EMPTY
 
     init {
         isDeleteAllGoals = settingsRepository.getDeleteGoalsOnStartup().asLiveData()
@@ -44,6 +44,28 @@ class LandingPageViewModel(
                 )
             }
         } ?: println("!!! Goal is null. Cannot update goal status.")
+    }
+
+    fun onGoalDeleteClicked(goal: Goal?) {
+        lastDeletedGoal = goal ?: Goal.EMPTY
+        goal?.apply {
+            viewModelScope.launch {
+                val isDeleteSucceeded = goalRepository.deleteGoal(goal)
+                if (isDeleteSucceeded.not()) {
+                    println("!!! Error while deleting the goal.")
+                }
+
+                view.showDeleteGoalSucceededSnackbar("Goal was successfuly deleted")
+            }
+        } ?: println("!!! Goal is null. Cannot delete goal.")
+    }
+
+    fun restoreDeletedGoal() {
+        if (lastDeletedGoal != Goal.EMPTY) {
+            viewModelScope.launch {
+                goalRepository.insert(lastDeletedGoal)
+            }
+        }
     }
 
     suspend fun deleteAllGoals(): Boolean {

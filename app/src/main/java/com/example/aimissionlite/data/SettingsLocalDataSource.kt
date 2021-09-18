@@ -31,6 +31,5 @@ data class SettingsLocalDataSource(val context: Context) {
 
     companion object {
         private const val USER_SETTINGS_NAME = "user_settings"
-
     }
 }
