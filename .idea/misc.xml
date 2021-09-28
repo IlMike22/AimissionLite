@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_delete_forever.xml" value="1.6607142857142858" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="1.6607142857142858" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.75" />
+        <entry key="app/src/main/res/layout/goal_item.xml" value="1.3717105263157894" />
       </map>
     </option>
   </component>

@@ -70,4 +70,19 @@ class Converters {
             "HIGH"-> Priority.HIGH
             else -> Priority.UNKNOWN
         }
+
+    companion object {
+        @TypeConverter
+        fun Genre.toGenreId():Int {
+            return when (this) {
+                Genre.PARTNERSHIP -> 0
+                Genre.BUSINESS -> 1
+                Genre.FITTNESS -> 2
+                Genre.MONEY -> 3
+                Genre.SOCIALISING -> 4
+                Genre.HEALTH -> 5
+                Genre.UNKNOWN -> 6
+            }
+        }
+    }
 }

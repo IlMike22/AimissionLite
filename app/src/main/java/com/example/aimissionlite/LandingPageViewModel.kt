@@ -1,9 +1,11 @@
 package com.example.aimissionlite
 
 import android.content.res.Resources
+import androidx.core.os.bundleOf
 import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.example.aimissionlite.data.BUNDLE_ID_GOAL
 import com.example.aimissionlite.data.GoalRepository
 import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Status
@@ -44,6 +46,13 @@ class LandingPageViewModel(
                 )
             }
         } ?: println("!!! Goal is null. Cannot update goal status.")
+    }
+
+    fun onGoalContainerClicked(goal:Goal?) {
+        goal?.apply {
+            val bundle = bundleOf(BUNDLE_ID_GOAL to this.id)
+            navController.navigate(R.id.action_LandingPageFragment_to_AddGoalFragment, bundle)
+        }
     }
 
     fun onGoalDeleteClicked(goal: Goal?) {

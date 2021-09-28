@@ -2,8 +2,12 @@ package com.example.aimissionlite
 
 import android.content.res.Resources
 import androidx.core.os.bundleOf
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.NavHostFragment.findNavController
+import com.example.aimissionlite.data.Converters.Companion.toGenreId
 import com.example.aimissionlite.data.GoalRepository
 import com.example.aimissionlite.models.domain.*
 import kotlinx.coroutines.launch
@@ -42,6 +46,16 @@ class DetailViewModel(
         }
 
         view.showValidationResult(validationStatusCode)
+    }
+
+    fun getGoal(id: Int) = viewModelScope.launch {
+        setGoal(repository.getGoal(id))
+    }
+
+    private fun setGoal(goal:Goal) {
+        view.setGoalTitle(goal.title)
+        view.setGoalDescription(goal.description)
+        view.setSelectedChipGenre(goal.genre.toGenreId())
     }
 
     private fun getCurrentDate(): String = LocalDateTime.now().toString()

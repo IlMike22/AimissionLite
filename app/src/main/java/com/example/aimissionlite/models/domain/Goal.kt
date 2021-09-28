@@ -16,9 +16,21 @@ data class Goal(
     val priority: Priority
 ) {
     companion object {
-        val EMPTY = Goal(0, "", "", "", "", false, Genre.UNKNOWN, Status.UNKOWN, Priority.UNKNOWN)
+        val EMPTY = Goal(
+            id = 0,
+            "",
+            description = "",
+            creationDate = "",
+            changeDate = "",
+            isRepeated = false,
+            genre = Genre.UNKNOWN,
+            status = Status.UNKOWN,
+            priority = Priority.UNKNOWN
+        )
     }
 }
+
+
 
 
 

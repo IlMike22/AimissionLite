@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -36,6 +37,7 @@ class GoalsAdapter(
         private val goalButtonStatusChange: ImageButton =
             goalView.findViewById(R.id.goal_button_status_change)
         private val goalButtonDeleteGoal:ImageButton = goalView.findViewById(R.id.goal_button_delete_goal)
+        private val goalContainer: LinearLayout = goalView.findViewById(R.id.goal_container)
 
         fun bind(goal: Goal?, resources:Resources) {
             goalTitle.text = goal?.title
@@ -47,12 +49,16 @@ class GoalsAdapter(
                 else -> println("!! Unknown status. Dont know which color the button should has.")
             }
 
-            goalButtonStatusChange.setOnClickListener { view ->
+            goalButtonStatusChange.setOnClickListener { _ ->
                 viewModel.onGoalStatusClicked(goal)
             }
 
-            goalButtonDeleteGoal.setOnClickListener { view ->
+            goalButtonDeleteGoal.setOnClickListener { _ ->
                 viewModel.onGoalDeleteClicked(goal)
+            }
+
+            goalContainer.setOnClickListener { _ ->
+                viewModel.onGoalContainerClicked(goal)
             }
         }
 

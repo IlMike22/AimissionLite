@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import com.example.aimissionlite.DetailViewModel.DetailViewModelFactory
+import com.example.aimissionlite.data.BUNDLE_ID_GOAL
 import com.example.aimissionlite.databinding.FragmentDetailBinding
 import com.example.aimissionlite.models.domain.GoalValidationStatusCode
 
@@ -90,13 +91,14 @@ class DetailFragment : IDetailFragment, Fragment() {
         }
     }
 
-    override fun hideKeyboard(currentFocusedView:View?) {
+    override fun hideKeyboard(currentFocusedView: View?) {
         try {
             (activity as MainActivity).hideKeyboard(currentFocusedView)
         } catch (error: Throwable) {
             Log.e(
                 "AimissionLite",
-                "DetailFragment: Unable to call activity for hiding keyboard. Details: $error")
+                "DetailFragment: Unable to call activity for hiding keyboard. Details: $error"
+            )
         }
     }
 
@@ -112,6 +114,11 @@ class DetailFragment : IDetailFragment, Fragment() {
         binding.executePendingBindings()
 
         detailFragment = this
+
+        val goalId = arguments?.getInt(BUNDLE_ID_GOAL)
+        if (goalId != null) {
+            viewModel.getGoal(goalId)
+        }
 
         return binding.root
     }

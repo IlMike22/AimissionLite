@@ -18,6 +18,8 @@ class GoalRepository(private val goalDao: IGoalDao) {
         goalDao.insert(goal)
     }
 
+    suspend fun getGoal(id: Int): Goal = goalDao.getGoal(id)
+
     @WorkerThread
     @CheckResult
     suspend fun deleteAll(): Boolean {
