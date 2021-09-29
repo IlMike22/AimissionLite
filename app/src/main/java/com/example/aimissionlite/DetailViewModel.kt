@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.aimissionlite.data.Converters.Companion.toGenreId
+import com.example.aimissionlite.data.Converters.Companion.toPriorityId
 import com.example.aimissionlite.data.GoalRepository
 import com.example.aimissionlite.models.domain.*
 import kotlinx.coroutines.launch
@@ -19,11 +20,53 @@ class DetailViewModel(
     val view: DetailFragment
 ) : ViewModel() {
 
+    private var currentGoal = Goal.EMPTY
+
     init {
         view.buttonText.value = resources.getString(R.string.fragment_detail_add_goal_button_text)
     }
 
     fun onButtonClicked() {
+        if (currentGoal != Goal.EMPTY) {
+            updateGoal()
+            return
+        }
+
+        createNewGoal()
+    }
+
+    fun getAndShowGoal(id: Int) = viewModelScope.launch {
+        currentGoal = repository.getGoal(id)
+        showGoal(currentGoal)
+    }
+
+    private fun updateGoal() {
+        val validationStatusCode = isGoalValid(currentGoal)
+
+        currentGoal = currentGoal.copy(
+            id = currentGoal.id,
+            title = view.goalTitle.value.orEmpty(),
+            description = view.goalDescription.value.orEmpty(),
+            creationDate = currentGoal.creationDate,
+            changeDate = getCurrentDate(),
+            isRepeated = currentGoal.isRepeated,
+            genre = view.selectedChipGenre.toGenre(),
+            status = currentGoal.status,
+            priority = view.selectedChipPriority.toPriority()
+        )
+
+        if (validationStatusCode == GoalValidationStatusCode.OK) {
+            viewModelScope.launch {
+                repository.updateGoal(currentGoal)
+            }
+
+            navigateToMainFragment()
+        }
+
+        view.showValidationResult(validationStatusCode)
+    }
+
+    private fun createNewGoal() {
         val currentDate = getCurrentDate()
 
         val newGoal = Goal(
@@ -41,28 +84,23 @@ class DetailViewModel(
         val validationStatusCode = isGoalValid(newGoal)
 
         if (validationStatusCode == GoalValidationStatusCode.OK) {
-            addGoal(newGoal)
+            viewModelScope.launch {
+                repository.insert(newGoal)
+            }
             navigateToMainFragment()
         }
 
         view.showValidationResult(validationStatusCode)
     }
 
-    fun getGoal(id: Int) = viewModelScope.launch {
-        setGoal(repository.getGoal(id))
-    }
-
-    private fun setGoal(goal:Goal) {
+    private fun showGoal(goal: Goal) {
         view.setGoalTitle(goal.title)
         view.setGoalDescription(goal.description)
         view.setSelectedChipGenre(goal.genre.toGenreId())
+        view.setSelectedChipPriority(goal.priority.toPriorityId())
     }
 
     private fun getCurrentDate(): String = LocalDateTime.now().toString()
-
-    private fun addGoal(goal: Goal) = viewModelScope.launch {
-        repository.insert(goal)
-    }
 
     private fun isGoalValid(goal: Goal): GoalValidationStatusCode {
         goal.apply {

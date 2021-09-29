@@ -117,7 +117,7 @@ class DetailFragment : IDetailFragment, Fragment() {
 
         val goalId = arguments?.getInt(BUNDLE_ID_GOAL)
         if (goalId != null) {
-            viewModel.getGoal(goalId)
+            viewModel.getAndShowGoal(goalId)
         }
 
         return binding.root

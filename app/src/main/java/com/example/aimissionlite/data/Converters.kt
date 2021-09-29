@@ -84,5 +84,15 @@ class Converters {
                 Genre.UNKNOWN -> 6
             }
         }
+
+        @TypeConverter
+        fun Priority.toPriorityId():Int {
+            return when (this) {
+                Priority.HIGH -> 0
+                Priority.NORMAL -> 1
+                Priority.LOW -> 2
+                else -> -1
+            }
+        }
     }
 }

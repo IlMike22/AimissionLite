@@ -51,4 +51,15 @@ class GoalRepository(private val goalDao: IGoalDao) {
             false
         }
     }
+
+    @WorkerThread
+    @CheckResult
+    suspend fun updateGoal(goal: Goal): Boolean {
+        return try {
+            goalDao.update(goal)
+            true
+        } catch (exception: Exception) {
+            false
+        }
+    }
 }

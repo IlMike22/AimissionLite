@@ -15,6 +15,9 @@ interface IGoalDao {
     @Query("UPDATE goal_table SET status = :status WHERE id = :id")
     suspend fun updateStatus(id: Int, status: String)
 
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun update(goal:Goal)
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(goal: Goal)
 
