@@ -1,14 +1,20 @@
 package com.example.aimissionlite.bindingadapter
 
 import androidx.core.view.get
-import androidx.core.view.size
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
+import com.example.aimissionlite.data.ChipSelectionException
+import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
 @BindingAdapter("android:getSelectedItem")
 fun getSelectedChipGroupItem(chipGroup: ChipGroup, selectedId: MutableLiveData<Int>) {
     chipGroup.setOnCheckedChangeListener { group, _ ->
+
+        if (group.checkedChipIds.isEmpty()) {
+            return@setOnCheckedChangeListener
+        }
+
         val checkedChipId = group.checkedChipIds.first()
         selectedId.value = checkedChipId
     }
@@ -16,15 +22,19 @@ fun getSelectedChipGroupItem(chipGroup: ChipGroup, selectedId: MutableLiveData<I
 
 @BindingAdapter("android:setChipGroupItem")
 fun ChipGroup.setSelectedChipGroupItem(selectedId: MutableLiveData<Int>?) {
-    if (selectedId?.value == null) {
+    val selectedChipId = selectedId?.value ?: return
+
+    if (selectedChipId >= this.childCount || selectedChipId <= 0) {
         return
     }
 
-    val newValue = selectedId.value ?: return
+    try {
+        val chip = this[selectedChipId - 1]
+        if (chip is Chip) {
+            chip.isChecked = true
+        }
 
-    if (newValue > this.size) {
-        return
+    } catch (exception: Exception) {
+        throw ChipSelectionException(exception.message)
     }
-
-    this[newValue].isSelected = true
 }
