@@ -8,6 +8,6 @@ fun Status.toStatusData(): String {
         Status.IN_PROGRESS -> "IN_PROGRESS"
         Status.DONE -> "DONE"
         Status.DEPRECATED -> "DEPRECATED"
-        Status.UNKOWN -> "UNKNOWN"
+        Status.UNKNOWN -> "UNKNOWN"
     }
 }

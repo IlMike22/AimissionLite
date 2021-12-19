@@ -1,14 +1,17 @@
-package com.example.aimissionlite
+package com.example.aimissionlite.presentation.landing_page
 
 import android.content.res.Resources
 import androidx.core.os.bundleOf
 import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.example.aimissionlite.R
+import com.example.aimissionlite.data.settings.repository.SettingsRepository
 import com.example.aimissionlite.data.BUNDLE_ID_GOAL
 import com.example.aimissionlite.data.GoalRepository
 import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Status
+import com.example.aimissionlite.presentation.landing_page.ui.LandingPageFragment
 import kotlinx.coroutines.launch
 
 class LandingPageViewModel(
@@ -86,7 +89,7 @@ class LandingPageViewModel(
             Status.DONE -> Status.TODO
             Status.TODO -> Status.IN_PROGRESS
             Status.IN_PROGRESS -> Status.DONE
-            else -> Status.UNKOWN
+            else -> Status.UNKNOWN
         }
 
     class LandingPageViewModelFactory(

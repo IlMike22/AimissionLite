@@ -1,0 +1,6 @@
+package com.example.aimissionlite.data
+
+const val AUTHOR_NAME_LABEL = "Author: "
+const val AUTHOR_NAME_VALUE = "Michael Widlok"
+const val VERSION_NAME_LABEL = "Version: "
+const val VERSION_NAME_VALUE = "0.2"

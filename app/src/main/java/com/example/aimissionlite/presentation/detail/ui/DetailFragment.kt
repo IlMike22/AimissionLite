@@ -1,4 +1,4 @@
-package com.example.aimissionlite
+package com.example.aimissionlite.presentation.detail.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -10,10 +10,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
-import com.example.aimissionlite.DetailViewModel.DetailViewModelFactory
+import com.example.aimissionlite.*
+import com.example.aimissionlite.presentation.detail.DetailViewModel.DetailViewModelFactory
 import com.example.aimissionlite.data.BUNDLE_ID_GOAL
 import com.example.aimissionlite.databinding.FragmentDetailBinding
 import com.example.aimissionlite.models.domain.GoalValidationStatusCode
+import com.example.aimissionlite.presentation.detail.DetailViewModel
 
 class DetailFragment : IDetailFragment, Fragment() {
     var detailFragment: DetailFragment? = null
@@ -68,26 +70,10 @@ class DetailFragment : IDetailFragment, Fragment() {
 
     override fun showValidationResult(validationStatusCode: GoalValidationStatusCode) {
         when (validationStatusCode) {
-            GoalValidationStatusCode.NO_TITLE -> Toast.makeText(
-                this.context,
-                getString(R.string.fragment_detail_goal_validation_status_no_title),
-                Toast.LENGTH_SHORT
-            ).show()
-            GoalValidationStatusCode.NO_DESCRIPTION -> Toast.makeText(
-                this.context,
-                getString(R.string.fragment_detail_goal_validation_status_no_description),
-                Toast.LENGTH_SHORT
-            ).show()
-            GoalValidationStatusCode.NO_GENRE -> Toast.makeText(
-                this.context,
-                getString(R.string.fragment_detail_goal_validation_status_no_genre),
-                Toast.LENGTH_SHORT
-            ).show()
-            else -> Toast.makeText(
-                this.context,
-                getString(R.string.fragment_detail_goal_validation_status_success),
-                Toast.LENGTH_SHORT
-            ).show()
+            GoalValidationStatusCode.NO_TITLE -> showToast(R.string.fragment_detail_goal_validation_status_no_title)
+            GoalValidationStatusCode.NO_DESCRIPTION -> showToast(R.string.fragment_detail_goal_validation_status_no_description)
+            GoalValidationStatusCode.NO_GENRE -> showToast(R.string.fragment_detail_goal_validation_status_no_genre)
+            else -> showToast(R.string.fragment_detail_goal_validation_status_success)
         }
     }
 
@@ -116,10 +102,18 @@ class DetailFragment : IDetailFragment, Fragment() {
         detailFragment = this
 
         val goalId = arguments?.getInt(BUNDLE_ID_GOAL)
-        if (goalId != null) {
+        if (goalId != null && goalId != 0) {
             viewModel.getAndShowGoal(goalId)
         }
 
         return binding.root
+    }
+
+    private fun showToast(id: Int) {
+        Toast.makeText(
+            this.context,
+            getString(id),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }

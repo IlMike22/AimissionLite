@@ -70,22 +70,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     // create the notification channel
-
     private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelName = getString(R.string.channel_name)
-            val channelDescription = getString(R.string.channel_description)
-            val channelImportance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel =
-                NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, channelImportance).apply {
-                    description = channelDescription
-                }
+        val channelName = getString(R.string.channel_name)
+        val channelDescription = getString(R.string.channel_description)
+        val channelImportance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel =
+            NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, channelImportance).apply {
+                description = channelDescription
+            }
 
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            notificationManager.createNotificationChannel(channel)
-        }
+        notificationManager.createNotificationChannel(channel)
     }
 
 

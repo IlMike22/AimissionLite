@@ -1,9 +1,10 @@
-package com.example.aimissionlite
+package com.example.aimissionlite.presentation.settings
 
 import android.content.res.Resources
 import androidx.lifecycle.*
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
+import com.example.aimissionlite.R
+import com.example.aimissionlite.presentation.settings.ui.SettingsFragment
+import com.example.aimissionlite.data.settings.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 

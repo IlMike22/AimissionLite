@@ -1,4 +1,4 @@
-package com.example.aimissionlite
+package com.example.aimissionlite.presentation.landing_page.adapter
 
 import android.content.res.Resources
 import android.view.LayoutInflater
@@ -10,8 +10,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.aimissionlite.R
 import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Status
+import com.example.aimissionlite.presentation.landing_page.LandingPageViewModel
 
 class GoalsAdapter(
     private val viewModel: LandingPageViewModel,
@@ -44,7 +46,9 @@ class GoalsAdapter(
             goalDescription.text = goal?.description
             when (goal?.status) {
                 Status.TODO -> goalButtonStatusChange.setImageDrawable(resources.getDrawable(R.drawable.ic_launcher_background_red))
-                Status.IN_PROGRESS -> goalButtonStatusChange.setImageDrawable(resources.getDrawable(R.drawable.ic_launcher_background_yellow))
+                Status.IN_PROGRESS -> goalButtonStatusChange.setImageDrawable(resources.getDrawable(
+                    R.drawable.ic_launcher_background_yellow
+                ))
                 Status.DONE -> goalButtonStatusChange.setImageDrawable(resources.getDrawable(R.drawable.ic_launcher_background_green))
                 else -> println("!! Unknown status. Dont know which color the button should has.")
             }
@@ -75,13 +79,13 @@ class GoalsAdapter(
     }
 
     class GoalComparator : DiffUtil.ItemCallback<Goal>() {
-        override fun areItemsTheSame(oldItem: Goal, newItem: Goal): Boolean {
-            return oldItem == newItem
+        override fun areItemsTheSame(oldGoal: Goal, newGoal: Goal): Boolean {
+            return oldGoal == newGoal
         }
 
-        override fun areContentsTheSame(oldItem: Goal, newItem: Goal): Boolean {
-            return oldItem.title == newItem.title &&
-                    oldItem.description == newItem.description
+        override fun areContentsTheSame(oldGoal: Goal, newGoal: Goal): Boolean {
+            return oldGoal.title == newGoal.title &&
+                    oldGoal.description == newGoal.description
         }
     }
 }

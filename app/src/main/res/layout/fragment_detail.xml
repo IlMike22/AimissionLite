@@ -6,13 +6,13 @@
 
         <variable
             name="viewModel"
-            type="com.example.aimissionlite.DetailViewModel" />
+            type="com.example.aimissionlite.presentation.detail.DetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".DetailFragment">
+        tools:context=".presentation.detail.ui.DetailFragment">
 
         <ScrollView
             android:id="@+id/scroll_view_create_goal"

@@ -1,4 +1,4 @@
-package com.example.aimissionlite
+package com.example.aimissionlite.presentation.landing_page.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +14,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.aimissionlite.*
+import com.example.aimissionlite.presentation.landing_page.LandingPageViewModel
+import com.example.aimissionlite.presentation.landing_page.adapter.GoalsAdapter
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*

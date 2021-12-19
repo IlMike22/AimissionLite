@@ -1,4 +1,4 @@
-package com.example.aimissionlite
+package com.example.aimissionlite.data.settings.repository
 
 import android.content.Context
 import com.example.aimissionlite.data.SettingsLocalDataSource

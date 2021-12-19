@@ -5,5 +5,5 @@ enum class Status {
     IN_PROGRESS,
     DONE,
     DEPRECATED,
-    UNKOWN
+    UNKNOWN
 }

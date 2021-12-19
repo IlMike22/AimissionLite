@@ -1,4 +1,4 @@
-package com.example.aimissionlite
+package com.example.aimissionlite.presentation.settings.ui
 
 import androidx.lifecycle.MutableLiveData
 

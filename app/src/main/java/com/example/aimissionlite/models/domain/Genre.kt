@@ -2,7 +2,7 @@ package com.example.aimissionlite.models.domain
 
 enum class Genre {
     BUSINESS,
-    FITTNESS,
+    FITNESS,
     MONEY,
     PARTNERSHIP,
     SOCIALISING,

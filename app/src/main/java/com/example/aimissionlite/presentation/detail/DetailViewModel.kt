@@ -1,4 +1,4 @@
-package com.example.aimissionlite
+package com.example.aimissionlite.presentation.detail
 
 import android.content.res.Resources
 import androidx.core.os.bundleOf
@@ -7,10 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.NavHostFragment.findNavController
+import com.example.aimissionlite.R
 import com.example.aimissionlite.data.Converters.Companion.toGenreId
 import com.example.aimissionlite.data.Converters.Companion.toPriorityId
 import com.example.aimissionlite.data.GoalRepository
 import com.example.aimissionlite.models.domain.*
+import com.example.aimissionlite.presentation.detail.ui.DetailFragment
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
@@ -125,7 +127,7 @@ class DetailViewModel(
             when (this.value) {
                 R.id.chip_genre_business -> Genre.BUSINESS
                 R.id.chip_genre_socialising -> Genre.SOCIALISING
-                R.id.chip_genre_fittness -> Genre.FITTNESS
+                R.id.chip_genre_fittness -> Genre.FITNESS
                 R.id.chip_genre_money -> Genre.MONEY
                 R.id.chip_genre_partnership -> Genre.PARTNERSHIP
                 R.id.chip_genre_health -> Genre.HEALTH

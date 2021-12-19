@@ -1,4 +1,4 @@
-package com.example.aimissionlite
+package com.example.aimissionlite.presentation.detail.ui
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
@@ -12,11 +12,16 @@ interface IDetailFragment {
     val buttonText: MutableLiveData<String>
 
     fun setSelectedChipPriority(id: Int)
+
     fun setSelectedChipGenre(id: Int)
+
     fun setGoalTitle(title: String)
+
     fun setGoalDescription(text: String)
+
     fun setButtonText(text: String)
 
     fun showValidationResult(validationStatusCode: GoalValidationStatusCode)
+
     fun hideKeyboard(currentFocusedView: View?)
 }

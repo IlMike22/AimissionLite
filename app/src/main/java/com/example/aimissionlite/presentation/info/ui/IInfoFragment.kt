@@ -1,4 +1,4 @@
-package com.example.aimissionlite
+package com.example.aimissionlite.presentation.info.ui
 
 import androidx.lifecycle.MutableLiveData
 
@@ -7,6 +7,6 @@ interface IInfoFragment {
     val author: MutableLiveData<String>
 
     fun setAuthor(name:String)
-    fun setVersionName(version:String)
 
+    fun setVersionName(version:String)
 }

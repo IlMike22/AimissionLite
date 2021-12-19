@@ -11,7 +11,7 @@ class Converters {
         return when (this) {
             Genre.PARTNERSHIP -> "PARTNERSHIP"
             Genre.BUSINESS -> "BUSINESS"
-            Genre.FITTNESS -> "FITTNESS"
+            Genre.FITNESS -> "FITNESS"
             Genre.MONEY -> "MONEY"
             Genre.SOCIALISING -> "SOCIALISING"
             Genre.HEALTH -> "HEALTH"
@@ -24,7 +24,7 @@ class Converters {
         when (this) {
             "PARTNERSHIP" -> Genre.PARTNERSHIP
             "BUSINESS" -> Genre.BUSINESS
-            "FITTNESS" -> Genre.FITTNESS
+            "FITNESS" -> Genre.FITNESS
             "MONEY" -> Genre.MONEY
             "HEALTH" -> Genre.HEALTH
             "SOCIALISING" -> Genre.SOCIALISING
@@ -38,7 +38,7 @@ class Converters {
             Status.IN_PROGRESS -> "IN_PROGRESS"
             Status.DONE -> "DONE"
             Status.DEPRECATED -> "DEPRECATED"
-            Status.UNKOWN -> "UNKNOWN"
+            Status.UNKNOWN -> "UNKNOWN"
         }
     }
 
@@ -49,7 +49,7 @@ class Converters {
             "IN_PROGRESS" -> Status.IN_PROGRESS
             "DONE" -> Status.DONE
             "DEPRECATED" -> Status.DEPRECATED
-            else -> Status.UNKOWN
+            else -> Status.UNKNOWN
         }
 
     @TypeConverter
@@ -77,7 +77,7 @@ class Converters {
             return when (this) {
                 Genre.PARTNERSHIP -> 0
                 Genre.BUSINESS -> 1
-                Genre.FITTNESS -> 2
+                Genre.FITNESS -> 2
                 Genre.MONEY -> 3
                 Genre.SOCIALISING -> 4
                 Genre.HEALTH -> 5

@@ -24,7 +24,7 @@ data class Goal(
             changeDate = "",
             isRepeated = false,
             genre = Genre.UNKNOWN,
-            status = Status.UNKOWN,
+            status = Status.UNKNOWN,
             priority = Priority.UNKNOWN
         )
     }

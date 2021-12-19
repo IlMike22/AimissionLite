@@ -1,4 +1,4 @@
-package com.example.aimissionlite
+package com.example.aimissionlite.presentation.settings.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,10 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
+import com.example.aimissionlite.AimissionApplication
+import com.example.aimissionlite.BR
+import com.example.aimissionlite.R
 import com.example.aimissionlite.databinding.FragmentSettingsBinding
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.aimissionlite.presentation.settings.SettingsViewModel
 
 class SettingsFragment : ISettingsFragment, Fragment() {
     var fragment: SettingsFragment? = null

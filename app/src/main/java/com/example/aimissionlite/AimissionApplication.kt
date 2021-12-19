@@ -3,6 +3,7 @@ package com.example.aimissionlite
 import android.app.Application
 import com.example.aimissionlite.data.GoalRepository
 import com.example.aimissionlite.data.GoalRoomDatabase
+import com.example.aimissionlite.data.settings.repository.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 

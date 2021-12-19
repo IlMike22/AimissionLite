@@ -25,10 +25,10 @@ class GoalRepository(private val goalDao: IGoalDao) {
     suspend fun deleteAll(): Boolean {
         return try {
             val result = goalDao.deleteAll()
-            println("!! success on deleting all goals? details: $result")
+            println("!! Success on deleting all goals. Details: $result")
             true
         } catch (error: Throwable) {
-            println("!! error while deleting all goals. details: ${error.message}")
+            println("!! Error while deleting all goals. Details: ${error.message}")
             false
         }
     }

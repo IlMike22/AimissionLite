@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/LandingPageFragment"
-        android:name="com.example.aimissionlite.LandingPageFragment"
+        android:name="com.example.aimissionlite.presentation.landing_page.ui.LandingPageFragment"
         android:label="@string/landing_page_fragment_label"
         tools:layout="@layout/fragment_landing_page">
 
@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/AddGoalFragment"
-        android:name="com.example.aimissionlite.DetailFragment"
+        android:name="com.example.aimissionlite.presentation.detail.ui.DetailFragment"
         android:label="@string/add_goal_fragment_label"
         tools:layout="@layout/fragment_detail">
 
@@ -48,7 +48,7 @@
 
     <fragment
         android:id="@+id/InfoFragment"
-        android:name="com.example.aimissionlite.InfoFragment"
+        android:name="com.example.aimissionlite.presentation.info.ui.InfoFragment"
         android:label="@string/info_fragment_label"
         tools:layout="@layout/fragment_info">
 
@@ -60,7 +60,7 @@
 
     <fragment
         android:id="@+id/SettingsFragment"
-        android:name="com.example.aimissionlite.SettingsFragment"
+        android:name="com.example.aimissionlite.presentation.settings.ui.SettingsFragment"
         android:label="@string/settings_fragment_label"
         tools:layout="@layout/fragment_settings">
 
