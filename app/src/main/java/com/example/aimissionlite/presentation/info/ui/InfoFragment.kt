@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.aimissionlite.BR
 import com.example.aimissionlite.R
 import com.example.aimissionlite.core.Resource
@@ -16,21 +16,24 @@ import com.example.aimissionlite.data.AUTHOR_NAME_LABEL
 import com.example.aimissionlite.data.VERSION_NAME_LABEL
 import com.example.aimissionlite.databinding.FragmentInfoBinding
 import com.example.aimissionlite.presentation.info.InfoViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_info.*
 
+@AndroidEntryPoint
 class InfoFragment : Fragment() {
     var infoFragment: InfoFragment? = null
-    lateinit var viewModel: InfoViewModel
+
     private val TAG = "InfoFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(
-            this,
-            InfoViewModel.InfoViewModelFactory()
-        ).get(InfoViewModel::class.java)
+        val viewModel: InfoViewModel by viewModels()
+//        viewModel = ViewModelProvider(
+//            this,
+//            InfoViewModel.InfoViewModelFactory()
+//        ).get(InfoViewModel::class.java)
 
         viewModel.information.observe(viewLifecycleOwner, Observer { response ->
             when (response) {

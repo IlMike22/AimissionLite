@@ -1,9 +1,9 @@
 package com.example.aimissionlite.domain.info.use_case
 
-import com.example.aimissionlite.domain.info.repository.InfoRepository
+import com.example.aimissionlite.data.info.repository.IInfoRepository
 
-class GetInformationUseCase() {
-    private val repository = InfoRepository()
-
+class GetInformationUseCase(
+    val repository: IInfoRepository
+) {
     operator fun invoke(): Map<String, String> = repository.getInfo()
 }
