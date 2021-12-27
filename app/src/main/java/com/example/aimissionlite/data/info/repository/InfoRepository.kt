@@ -1,10 +1,10 @@
-package com.example.aimissionlite.domain.info.repository
+package com.example.aimissionlite.data.info.repository
 
 import com.example.aimissionlite.data.AUTHOR_NAME_LABEL
 import com.example.aimissionlite.data.AUTHOR_NAME_VALUE
 import com.example.aimissionlite.data.VERSION_NAME_LABEL
 import com.example.aimissionlite.data.VERSION_NAME_VALUE
-import com.example.aimissionlite.data.info.repository.IInfoRepository
+import com.example.aimissionlite.domain.info.repository.IInfoRepository
 
 class InfoRepository() : IInfoRepository {
     override fun getInfo(): Map<String, String> {

@@ -1,28 +1,30 @@
-package com.example.aimissionlite.data
+package com.example.aimissionlite.data.common.repository
 
 import androidx.annotation.CheckResult
 import androidx.annotation.WorkerThread
+import com.example.aimissionlite.data.IGoalDao
+import com.example.aimissionlite.data.toStatusData
+import com.example.aimissionlite.domain.common.repository.IGoalRepository
 import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Status
 import kotlinx.coroutines.flow.Flow
 
-class GoalRepository(private val goalDao: IGoalDao) {
-    val allGoals: Flow<List<Goal>> = goalDao.getGoals()
-
+class GoalRepository(private val goalDao: IGoalDao): IGoalRepository {
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun insert(goal: Goal) {
+    override suspend fun insert(goal: Goal) {
         /**
         First we map the domain model to data before we use the dao to write the new goal into db.
          */
         goalDao.insert(goal)
     }
 
-    suspend fun getGoal(id: Int): Goal = goalDao.getGoal(id)
+    @WorkerThread
+    override suspend fun getGoal(id: Int): Goal = goalDao.getGoal(id)
 
     @WorkerThread
     @CheckResult
-    suspend fun deleteAll(): Boolean {
+    override suspend fun deleteAll(): Boolean {
         return try {
             val result = goalDao.deleteAll()
             println("!! Success on deleting all goals. Details: $result")
@@ -34,7 +36,7 @@ class GoalRepository(private val goalDao: IGoalDao) {
     }
 
     @WorkerThread
-    suspend fun updateStatus(id: Int, status: Status) {
+    override suspend fun updateStatus(id: Int, status: Status) {
         goalDao.updateStatus(
             id = id,
             status = status.toStatusData()
@@ -43,7 +45,7 @@ class GoalRepository(private val goalDao: IGoalDao) {
 
     @WorkerThread
     @CheckResult
-    suspend fun deleteGoal(goal: Goal): Boolean {
+    override suspend fun deleteGoal(goal: Goal): Boolean {
         return try {
             goalDao.deleteGoal(goal)
             true
@@ -54,12 +56,16 @@ class GoalRepository(private val goalDao: IGoalDao) {
 
     @WorkerThread
     @CheckResult
-    suspend fun updateGoal(goal: Goal): Boolean {
+    override suspend fun updateGoal(goal: Goal): Boolean {
         return try {
             goalDao.update(goal)
             true
         } catch (exception: Exception) {
             false
         }
+    }
+
+    override fun getGoals(): Flow<List<Goal>> {
+        return goalDao.getGoals()
     }
 }

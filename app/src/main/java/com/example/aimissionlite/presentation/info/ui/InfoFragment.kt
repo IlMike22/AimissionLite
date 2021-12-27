@@ -30,10 +30,6 @@ class InfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val viewModel: InfoViewModel by viewModels()
-//        viewModel = ViewModelProvider(
-//            this,
-//            InfoViewModel.InfoViewModelFactory()
-//        ).get(InfoViewModel::class.java)
 
         viewModel.information.observe(viewLifecycleOwner, Observer { response ->
             when (response) {

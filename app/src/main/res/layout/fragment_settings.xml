@@ -17,7 +17,6 @@
         <TextView
             android:id="@+id/fragment_settings_header"
             style="@style/FragmentSettingsHeader"
-            android:text="@={viewModel.view.header}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="some settings header" />

@@ -1,47 +1,38 @@
 package com.example.aimissionlite.presentation.settings
 
-import android.content.res.Resources
-import androidx.lifecycle.*
-import com.example.aimissionlite.R
-import com.example.aimissionlite.presentation.settings.ui.SettingsFragment
-import com.example.aimissionlite.data.settings.repository.SettingsRepository
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.aimissionlite.core.Resource
+import com.example.aimissionlite.domain.settings.use_case.implementation.SettingsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SettingsViewModel(
-    resources: Resources,
-    val repository: SettingsRepository,
-    val view: SettingsFragment
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
+    private val useCase: SettingsUseCase
 ) : ViewModel() {
-    val isDeleteGoalsOnStartup: LiveData<Boolean> =
-        repository.getDeleteGoalsOnStartup().asLiveData()
+    val isDeleteGoalOnStartup = MutableLiveData<Resource<Flow<Boolean>>>()
 
     init {
-        view.setHeader(resources.getString(R.string.fragment_settings_header_text))
+        val result = useCase.getDeleteGoalsOnStartup()
+        isDeleteGoalOnStartup.postValue(Resource.Success(result))
     }
+
 
     fun onDeleteGoalsClicked(isEnabled: Boolean) {
         println("!!! delete goals button clicked!")
         viewModelScope.launch {
-            repository.setDeleteGoalsOnStartup(isEnabled)
+            useCase.setDeleteGoalsOnStartup(isEnabled)
         }
     }
 
-    fun getSettingsFromDataStore(): Flow<Boolean>{
-        return repository.getDeleteGoalsOnStartup()
-    }
+    fun getHeaderText() = useCase.getHeaderText()
 
-    class SettingsViewModelFactory(
-        private val resources: Resources,
-        private val repository: SettingsRepository,
-        private val view: SettingsFragment
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(SettingsViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return SettingsViewModel(resources, repository, view) as T
-            }
-            throw IllegalArgumentException("Unknown viewmodel class")
-        }
+    fun getSettingsFromDataStore(): Flow<Boolean> {
+        return useCase.getDeleteGoalsOnStartup()
     }
 }
+

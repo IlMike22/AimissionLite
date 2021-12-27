@@ -1,6 +1,6 @@
 package com.example.aimissionlite.domain.info.use_case
 
-import com.example.aimissionlite.data.info.repository.IInfoRepository
+import com.example.aimissionlite.domain.info.repository.IInfoRepository
 
 class GetInformationUseCase(
     val repository: IInfoRepository

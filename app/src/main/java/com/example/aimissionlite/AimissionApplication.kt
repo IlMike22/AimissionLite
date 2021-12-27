@@ -1,9 +1,8 @@
 package com.example.aimissionlite
 
 import android.app.Application
-import com.example.aimissionlite.data.GoalRepository
+import com.example.aimissionlite.data.common.repository.GoalRepository
 import com.example.aimissionlite.data.GoalRoomDatabase
-import com.example.aimissionlite.data.settings.repository.SettingsRepository
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -20,5 +19,5 @@ class AimissionApplication : Application() {
     }
 
     val goalRepository by lazy { GoalRepository(database.goalDao()) }
-    val settingsRepository by lazy { SettingsRepository(this) }
+//    val settingsRepository by lazy { SettingsRepository(this) }
 }

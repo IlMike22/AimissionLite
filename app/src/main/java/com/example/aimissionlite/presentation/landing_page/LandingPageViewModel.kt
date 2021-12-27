@@ -1,49 +1,44 @@
 package com.example.aimissionlite.presentation.landing_page
 
-import android.content.res.Resources
-import androidx.core.os.bundleOf
 import androidx.lifecycle.*
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
-import com.example.aimissionlite.R
-import com.example.aimissionlite.data.settings.repository.SettingsRepository
-import com.example.aimissionlite.data.BUNDLE_ID_GOAL
-import com.example.aimissionlite.data.GoalRepository
+import com.example.aimissionlite.models.ILandingPageUseCase
 import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Status
-import com.example.aimissionlite.presentation.landing_page.ui.LandingPageFragment
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LandingPageViewModel(
-    private val goalRepository: GoalRepository,
-    settingsRepository: SettingsRepository,
-    val view: LandingPageFragment
+@HiltViewModel
+class LandingPageViewModel @Inject constructor(
+    private val useCase: ILandingPageUseCase
 ) : ViewModel() {
     var isDeleteAllGoals: LiveData<Boolean>? = null
-    val allGoals: LiveData<List<Goal>> = goalRepository.allGoals.asLiveData()
-    val navController: NavController = view.findNavController()
+
+    val allGoals: LiveData<List<Goal>> = useCase.getAllGoals().asLiveData()
     private var lastDeletedGoal: Goal = Goal.EMPTY
 
+    val uiEvent = MutableLiveData<LandingPageUiEvent>()
+
     init {
-        isDeleteAllGoals = settingsRepository.getDeleteGoalsOnStartup().asLiveData()
+        isDeleteAllGoals = useCase.getDeleteGoalsOnStartup().asLiveData()
     }
 
     fun onAddGoalClicked() {
-        navController.navigate(R.id.action_LandingPageFragment_to_AddGoalFragment)
+        uiEvent.postValue(LandingPageUiEvent.NavigateToAddGoal())
     }
 
     fun onInfoClicked() {
-        navController.navigate(R.id.action_LandingPageFragment_to_InfoFragment)
+        uiEvent.postValue(LandingPageUiEvent.NavigateToInfo())
     }
 
     fun onSettingsClicked() {
-        navController.navigate(R.id.action_LandingPageFragment_to_SettingsFragment)
+        uiEvent.postValue(LandingPageUiEvent.NavigateToSettings())
     }
 
     fun onGoalStatusClicked(goal: Goal?) {
         goal?.apply {
             viewModelScope.launch {
-                goalRepository.updateStatus(
+                useCase.updateGoalStatus(
                     id = goal.id,
                     status = getNewGoalStatus(goal.status)
                 )
@@ -51,10 +46,9 @@ class LandingPageViewModel(
         } ?: println("!!! Goal is null. Cannot update goal status.")
     }
 
-    fun onGoalContainerClicked(goal:Goal?) {
+    fun onGoalContainerClicked(goal: Goal?) {
         goal?.apply {
-            val bundle = bundleOf(BUNDLE_ID_GOAL to this.id)
-            navController.navigate(R.id.action_LandingPageFragment_to_AddGoalFragment, bundle)
+            uiEvent.postValue(LandingPageUiEvent.NavigateToAddGoal(this))
         }
     }
 
@@ -62,12 +56,12 @@ class LandingPageViewModel(
         lastDeletedGoal = goal ?: Goal.EMPTY
         goal?.apply {
             viewModelScope.launch {
-                val isDeleteSucceeded = goalRepository.deleteGoal(goal)
+                val isDeleteSucceeded = useCase.deleteGoal(goal)
                 if (isDeleteSucceeded.not()) {
                     println("!!! Error while deleting the goal.")
                 }
 
-                view.showDeleteGoalSucceededSnackbar("Goal was successfuly deleted")
+                uiEvent.postValue(LandingPageUiEvent.ShowSnackbar("Goal deleted."))
             }
         } ?: println("!!! Goal is null. Cannot delete goal.")
     }
@@ -75,13 +69,13 @@ class LandingPageViewModel(
     fun restoreDeletedGoal() {
         if (lastDeletedGoal != Goal.EMPTY) {
             viewModelScope.launch {
-                goalRepository.insert(lastDeletedGoal)
+                useCase.insertGoal(lastDeletedGoal)
             }
         }
     }
 
     suspend fun deleteAllGoals(): Boolean {
-        return goalRepository.deleteAll()
+        return useCase.deleteAllGoals()
     }
 
     private fun getNewGoalStatus(oldStatus: Status): Status =
@@ -91,23 +85,4 @@ class LandingPageViewModel(
             Status.IN_PROGRESS -> Status.DONE
             else -> Status.UNKNOWN
         }
-
-    class LandingPageViewModelFactory(
-        private val goalRepository: GoalRepository,
-        private val settingsRepository: SettingsRepository,
-        private val view: LandingPageFragment,
-        private val resources: Resources
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(LandingPageViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return LandingPageViewModel(
-                    goalRepository,
-                    settingsRepository,
-                    view
-                ) as T
-            }
-            throw IllegalArgumentException("Unknown view model class")
-        }
-    }
 }

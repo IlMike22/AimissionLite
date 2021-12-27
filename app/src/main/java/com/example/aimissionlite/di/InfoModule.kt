@@ -1,7 +1,7 @@
 package com.example.aimissionlite.di
 
-import com.example.aimissionlite.data.info.repository.IInfoRepository
-import com.example.aimissionlite.domain.info.repository.InfoRepository
+import com.example.aimissionlite.domain.info.repository.IInfoRepository
+import com.example.aimissionlite.data.info.repository.InfoRepository
 import com.example.aimissionlite.domain.info.use_case.GetInformationUseCase
 import dagger.Module
 import dagger.Provides

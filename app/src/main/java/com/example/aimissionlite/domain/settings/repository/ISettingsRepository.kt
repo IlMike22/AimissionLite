@@ -1,5 +1,10 @@
 package com.example.aimissionlite.domain.settings.repository
 
-interface ISettingsRepository
-{
+import android.content.Context
+import kotlinx.coroutines.flow.Flow
+
+interface ISettingsRepository {
+    suspend fun setDeleteGoalsOnStartup(enabled: Boolean)
+
+    fun getDeleteGoalsOnStartup(): Flow<Boolean>
 }

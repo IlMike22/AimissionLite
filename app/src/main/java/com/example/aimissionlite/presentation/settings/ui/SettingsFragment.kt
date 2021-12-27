@@ -1,6 +1,7 @@
 package com.example.aimissionlite.presentation.settings.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,31 +9,22 @@ import android.widget.CheckBox
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.example.aimissionlite.AimissionApplication
 import com.example.aimissionlite.BR
 import com.example.aimissionlite.R
+import com.example.aimissionlite.core.Resource
 import com.example.aimissionlite.databinding.FragmentSettingsBinding
 import com.example.aimissionlite.presentation.settings.SettingsViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.coroutines.flow.onEach
 
-class SettingsFragment : ISettingsFragment, Fragment() {
+@AndroidEntryPoint
+class SettingsFragment : Fragment() {
     var fragment: SettingsFragment? = null
-    override val header: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
-    }
+    val TAG = "SettingsFragment"
 
-    private val viewModel: SettingsViewModel by viewModels {
-        SettingsViewModel.SettingsViewModelFactory(
-            resources = resources,
-            repository = (this.activity?.application as AimissionApplication).settingsRepository,
-            view = this
-        )
-    }
-
-    override fun setHeader(text: String) {
-        header.value = text
-    }
+    private val viewModel: SettingsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,14 +46,20 @@ class SettingsFragment : ISettingsFragment, Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val deleteGoalsOnStartupCheckBox =
-            view.findViewById<CheckBox>(R.id.fragment_settings_check_box_delete_goals)
+        fragment_settings_header.text = viewModel.getHeaderText()
 
-        viewModel.isDeleteGoalsOnStartup.observe(viewLifecycleOwner, Observer { isGoalsDeleted ->
-            deleteGoalsOnStartupCheckBox.isChecked = isGoalsDeleted
+        viewModel.isDeleteGoalOnStartup.observe(viewLifecycleOwner, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    response.data?.onEach { isDeleteGoals ->
+                        fragment_settings_check_box_delete_goals.isChecked = isDeleteGoals
+                    }
+                }
+                else -> Log.e(TAG, "Cannot set checkbox. ${response.message}")
+            }
         })
 
-        deleteGoalsOnStartupCheckBox.setOnClickListener { checkBoxView ->
+        fragment_settings_check_box_delete_goals.setOnClickListener { checkBoxView ->
             viewModel.onDeleteGoalsClicked((checkBoxView as CheckBox).isChecked) // todo maybe critical cast
         }
     }

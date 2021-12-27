@@ -1,4 +1,4 @@
-package com.example.aimissionlite.data.info.repository
+package com.example.aimissionlite.domain.info.repository
 
 interface IInfoRepository {
     fun getInfo():Map<String,String>

@@ -8,7 +8,9 @@ import com.example.aimissionlite.data.SettingsLocalDataSource.PreferencesKeys.DE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-data class SettingsLocalDataSource(val context: Context) {
+data class SettingsLocalDataSource(
+    val context: Context
+) {
     private val Context.dataStore by preferencesDataStore(
         name = USER_SETTINGS_NAME
     )

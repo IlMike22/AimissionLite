@@ -10,28 +10,26 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.aimissionlite.*
+import com.example.aimissionlite.R
+import com.example.aimissionlite.presentation.landing_page.LandingPageUiEvent
 import com.example.aimissionlite.presentation.landing_page.LandingPageViewModel
 import com.example.aimissionlite.presentation.landing_page.adapter.GoalsAdapter
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_landing_page.*
 import kotlinx.coroutines.launch
 
-class LandingPageFragment : ILandingPageFragment, Fragment() {
-    val viewModel: LandingPageViewModel by viewModels {
-        LandingPageViewModel.LandingPageViewModelFactory(
-            goalRepository = (this.activity?.application as AimissionApplication).goalRepository,
-            settingsRepository = (this.activity?.application as AimissionApplication).settingsRepository,
-            view = this,
-            resources = resources
-        )
-    }
+@AndroidEntryPoint
+class LandingPageFragment : Fragment() {
+    val viewModel: LandingPageViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,9 +40,10 @@ class LandingPageFragment : ILandingPageFragment, Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val navController: NavController = findNavController()
         activity?.toolbar?.setupWithNavController(
-            navController = viewModel.navController,
-            configuration = AppBarConfiguration(viewModel.navController.graph)
+            navController = navController,
+            configuration = AppBarConfiguration(navController.graph)
         )
         return inflater.inflate(R.layout.fragment_landing_page, container, false)
     }
@@ -89,6 +88,17 @@ class LandingPageFragment : ILandingPageFragment, Fragment() {
             }
         })
 
+        viewModel.uiEvent.observe(viewLifecycleOwner, { uiEvent ->
+            when (uiEvent) {
+                is LandingPageUiEvent.ShowSnackbar -> showDeleteGoalSucceededSnackbar(
+                    uiEvent.message ?: "Unknown error"
+                )
+                is LandingPageUiEvent.NavigateToAddGoal -> findNavController().navigate(R.id.action_LandingPageFragment_to_AddGoalFragment)
+                is LandingPageUiEvent.NavigateToSettings -> findNavController().navigate(R.id.action_LandingPageFragment_to_SettingsFragment)
+                is LandingPageUiEvent.NavigateToInfo -> findNavController().navigate(R.id.action_LandingPageFragment_to_InfoFragment)
+            }
+        })
+
         val fabAddGoal = view.findViewById<ExtendedFloatingActionButton>(R.id.fab_add_goal)
         fabAddGoal.setOnClickListener {
             viewModel.onAddGoalClicked()
@@ -112,8 +122,8 @@ class LandingPageFragment : ILandingPageFragment, Fragment() {
         })
     }
 
-    override fun showDeleteGoalSucceededSnackbar(text: String) {
-        val snackbar = Snackbar.make(landing_page_container,text,Snackbar.LENGTH_LONG)
+    private fun showDeleteGoalSucceededSnackbar(text: String) {
+        val snackbar = Snackbar.make(landing_page_container, text, Snackbar.LENGTH_LONG)
         snackbar.setAction("UNDO") {
             println("!!! revert button clicked!")
             viewModel.restoreDeletedGoal()

@@ -10,7 +10,7 @@ import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.aimissionlite.R
 import com.example.aimissionlite.data.Converters.Companion.toGenreId
 import com.example.aimissionlite.data.Converters.Companion.toPriorityId
-import com.example.aimissionlite.data.GoalRepository
+import com.example.aimissionlite.data.common.repository.GoalRepository
 import com.example.aimissionlite.models.domain.*
 import com.example.aimissionlite.presentation.detail.ui.DetailFragment
 import kotlinx.coroutines.launch
