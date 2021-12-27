@@ -1,10 +1,14 @@
 package com.example.aimissionlite.presentation.landing_page
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.aimissionlite.models.ILandingPageUseCase
 import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,23 +21,30 @@ class LandingPageViewModel @Inject constructor(
     val allGoals: LiveData<List<Goal>> = useCase.getAllGoals().asLiveData()
     private var lastDeletedGoal: Goal = Goal.EMPTY
 
-    val uiEvent = MutableLiveData<LandingPageUiEvent>()
+    val uiEvent = MutableSharedFlow<LandingPageUiEvent>()
 
     init {
         isDeleteAllGoals = useCase.getDeleteGoalsOnStartup().asLiveData()
     }
 
     fun onAddGoalClicked() {
-        uiEvent.postValue(LandingPageUiEvent.NavigateToAddGoal())
+        viewModelScope.launch {
+            uiEvent.emit(LandingPageUiEvent.NavigateToAddGoal())
+        }
     }
 
     fun onInfoClicked() {
-        uiEvent.postValue(LandingPageUiEvent.NavigateToInfo())
+        viewModelScope.launch {
+            uiEvent.emit(LandingPageUiEvent.NavigateToInfo())
+        }
     }
 
     fun onSettingsClicked() {
-        uiEvent.postValue(LandingPageUiEvent.NavigateToSettings())
+        viewModelScope.launch {
+            uiEvent.emit(LandingPageUiEvent.NavigateToSettings())
+        }
     }
+
 
     fun onGoalStatusClicked(goal: Goal?) {
         goal?.apply {
@@ -47,8 +58,10 @@ class LandingPageViewModel @Inject constructor(
     }
 
     fun onGoalContainerClicked(goal: Goal?) {
-        goal?.apply {
-            uiEvent.postValue(LandingPageUiEvent.NavigateToAddGoal(this))
+        viewModelScope.launch {
+            goal?.apply {
+                uiEvent.emit(LandingPageUiEvent.NavigateToAddGoal(this))
+            }
         }
     }
 
@@ -61,7 +74,7 @@ class LandingPageViewModel @Inject constructor(
                     println("!!! Error while deleting the goal.")
                 }
 
-                uiEvent.postValue(LandingPageUiEvent.ShowSnackbar("Goal deleted."))
+                uiEvent.emit(LandingPageUiEvent.ShowSnackbar("Goal deleted."))
             }
         } ?: println("!!! Goal is null. Cannot delete goal.")
     }

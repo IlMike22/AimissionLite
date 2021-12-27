@@ -25,11 +25,16 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_landing_page.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LandingPageFragment : Fragment() {
     val viewModel: LandingPageViewModel by viewModels()
+    var job: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +46,7 @@ class LandingPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val navController: NavController = findNavController()
+
         activity?.toolbar?.setupWithNavController(
             navController = navController,
             configuration = AppBarConfiguration(navController.graph)
@@ -88,16 +94,35 @@ class LandingPageFragment : Fragment() {
             }
         })
 
-        viewModel.uiEvent.observe(viewLifecycleOwner, { uiEvent ->
-            when (uiEvent) {
-                is LandingPageUiEvent.ShowSnackbar -> showDeleteGoalSucceededSnackbar(
-                    uiEvent.message ?: "Unknown error"
-                )
-                is LandingPageUiEvent.NavigateToAddGoal -> findNavController().navigate(R.id.action_LandingPageFragment_to_AddGoalFragment)
-                is LandingPageUiEvent.NavigateToSettings -> findNavController().navigate(R.id.action_LandingPageFragment_to_SettingsFragment)
-                is LandingPageUiEvent.NavigateToInfo -> findNavController().navigate(R.id.action_LandingPageFragment_to_InfoFragment)
+        job = CoroutineScope(Dispatchers.Main).launch {
+            viewModel.uiEvent.collectLatest { uiEvent ->
+                when (uiEvent) {
+                    is LandingPageUiEvent.ShowSnackbar -> {
+                        showDeleteGoalSucceededSnackbar(
+                            uiEvent.message ?: "Unknown error"
+                        )
+                    }
+                    is LandingPageUiEvent.NavigateToSettings -> {
+                        findNavController().navigate(R.id.action_LandingPageFragment_to_SettingsFragment)
+                        job?.cancel()
+
+                    }
+                    is LandingPageUiEvent.NavigateToInfo -> {
+                        findNavController().navigate(R.id.action_LandingPageFragment_to_InfoFragment)
+                        job?.cancel()
+                    }
+                    is LandingPageUiEvent.NavigateToAddGoal -> {
+                        findNavController().navigate(R.id.action_LandingPageFragment_to_AddGoalFragment)
+                    }
+                }
             }
-        })
+
+            job?.apply {
+                if (isActive) {
+                    cancel()
+                }
+            }
+        }
 
         val fabAddGoal = view.findViewById<ExtendedFloatingActionButton>(R.id.fab_add_goal)
         fabAddGoal.setOnClickListener {
