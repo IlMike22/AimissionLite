@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -139,12 +138,13 @@ class LandingPageFragment : Fragment() {
         recyclerView.adapter = goalAdapter
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-        // if option "delete goals on startup" is activated, this process will start here and now..
-        viewModel.allGoals.observe(viewLifecycleOwner, Observer { goals ->
-            goals?.let { currentGoals ->
-                goalAdapter.submitList(currentGoals)
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.allGoals.collectLatest { goals ->
+                goals.let { currentGoals ->
+                    goalAdapter.submitList(currentGoals)
+                }
             }
-        })
+        }
     }
 
     private fun showDeleteGoalSucceededSnackbar(text: String) {

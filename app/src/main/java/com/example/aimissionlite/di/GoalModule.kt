@@ -14,7 +14,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object GoalModule {
-
     @Provides
     @Singleton
     fun provideGoalRepository(database: GoalRoomDatabase): IGoalRepository {
@@ -29,7 +28,7 @@ object GoalModule {
         return Room.databaseBuilder(
             app,
             GoalRoomDatabase::class.java,
-            "word_info_db"
+            "goal_database"
         ).build()
     }
 }

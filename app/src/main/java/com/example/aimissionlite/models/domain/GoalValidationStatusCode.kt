@@ -4,5 +4,6 @@ enum class GoalValidationStatusCode {
     NO_TITLE,
     NO_DESCRIPTION,
     NO_GENRE,
-    OK
+    OK,
+    UNKNOWN
 }

@@ -1,31 +1,55 @@
 package com.example.aimissionlite.presentation.detail
 
 import android.content.res.Resources
-import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.aimissionlite.R
 import com.example.aimissionlite.data.Converters.Companion.toGenreId
 import com.example.aimissionlite.data.Converters.Companion.toPriorityId
-import com.example.aimissionlite.data.common.repository.GoalRepository
+import com.example.aimissionlite.domain.common.repository.IGoalRepository
 import com.example.aimissionlite.models.domain.*
-import com.example.aimissionlite.presentation.detail.ui.DetailFragment
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import javax.inject.Inject
 
-class DetailViewModel(
-    private val resources: Resources,
-    private val repository: GoalRepository,
-    val view: DetailFragment
+@HiltViewModel
+class DetailViewModel @Inject constructor(
+    private val repository: IGoalRepository
 ) : ViewModel() {
+    val uiEvent = MutableSharedFlow<DetailUIEvent<GoalValidationStatusCode>>()
 
     private var currentGoal = Goal.EMPTY
+    var buttonText: String = ""
 
-    init {
-        view.buttonText.value = resources.getString(R.string.fragment_detail_add_goal_button_text)
+    private val _goalTitle: MutableLiveData<String>? = null
+    val goalTitle = _goalTitle
+
+    fun setGoalTitle(title: String) {
+        _goalTitle?.value = title
+    }
+
+    private val _goalDescription: MutableLiveData<String>? = null
+    val goalDescription = _goalDescription
+
+    fun setGoalDescription(description: String) {
+        _goalDescription?.value = description
+    }
+
+    private val _selectedChipGenre: MutableLiveData<Int>? = null
+    val selectedChipGenre = _selectedChipGenre
+
+    fun setSelectedChipGenre(genre: Int) {
+        _selectedChipGenre?.value = genre
+    }
+
+    private val _selectedChipPriority: MutableLiveData<Int>? = null
+    val selectedChipPriority = _selectedChipPriority
+
+    fun setSelectedChipPriority(genre: Int) {
+        _selectedChipPriority?.value = genre
     }
 
     fun onButtonClicked() {
@@ -47,14 +71,14 @@ class DetailViewModel(
 
         currentGoal = currentGoal.copy(
             id = currentGoal.id,
-            title = view.goalTitle.value.orEmpty(),
-            description = view.goalDescription.value.orEmpty(),
+            title = _goalTitle?.value.orEmpty(),
+            description = _goalDescription?.value.orEmpty(),
             creationDate = currentGoal.creationDate,
             changeDate = getCurrentDate(),
             isRepeated = currentGoal.isRepeated,
-            genre = view.selectedChipGenre.toGenre(),
+            genre = _selectedChipGenre?.toGenre() ?: Genre.UNKNOWN,
             status = currentGoal.status,
-            priority = view.selectedChipPriority.toPriority()
+            priority = _selectedChipPriority?.toPriority() ?: Priority.UNKNOWN
         )
 
         if (validationStatusCode == GoalValidationStatusCode.OK) {
@@ -65,7 +89,9 @@ class DetailViewModel(
             navigateToMainFragment()
         }
 
-        view.showValidationResult(validationStatusCode)
+        viewModelScope.launch {
+            uiEvent.emit(DetailUIEvent.ShowValidationResult(validationStatusCode))
+        }
     }
 
     private fun createNewGoal() {
@@ -73,14 +99,14 @@ class DetailViewModel(
 
         val newGoal = Goal(
             id = 0,
-            title = view.goalTitle.value.orEmpty(),
-            description = view.goalDescription.value.orEmpty(),
+            title = goalTitle?.value.orEmpty(),
+            description = goalDescription?.value.orEmpty(),
             creationDate = currentDate,
             changeDate = currentDate,
             isRepeated = false,
-            genre = view.selectedChipGenre.toGenre(),
+            genre = selectedChipGenre?.toGenre() ?: Genre.UNKNOWN,
             status = Status.TODO,
-            priority = view.selectedChipPriority.toPriority()
+            priority = selectedChipPriority?.toPriority() ?: Priority.UNKNOWN
         )
 
         val validationStatusCode = isGoalValid(newGoal)
@@ -92,14 +118,16 @@ class DetailViewModel(
             navigateToMainFragment()
         }
 
-        view.showValidationResult(validationStatusCode)
+        viewModelScope.launch {
+            uiEvent.emit(DetailUIEvent.ShowValidationResult(validationStatusCode))
+        }
     }
 
     private fun showGoal(goal: Goal) {
-        view.setGoalTitle(goal.title)
-        view.setGoalDescription(goal.description)
-        view.setSelectedChipGenre(goal.genre.toGenreId())
-        view.setSelectedChipPriority(goal.priority.toPriorityId())
+        _goalTitle?.value = goal.title
+        _goalDescription?.value = goal.description
+        _selectedChipGenre?.value = goal.genre.toGenreId()
+        _selectedChipPriority?.value = goal.priority.toPriorityId()
     }
 
     private fun getCurrentDate(): String = LocalDateTime.now().toString()
@@ -116,10 +144,10 @@ class DetailViewModel(
     }
 
     private fun navigateToMainFragment() {
-        view.hideKeyboard(view.activity?.currentFocus)
-        val bundle =
-            bundleOf(resources.getString(R.string.bundle_argument_goal_title) to view.goalTitle.value)
-        findNavController(view).navigate(R.id.action_SecondFragment_to_FirstFragment, bundle)
+        viewModelScope.launch {
+            uiEvent.emit(DetailUIEvent.HideKeyboard())
+            uiEvent.emit(DetailUIEvent.NavigateToLandingPage())
+        }
     }
 
     companion object {
@@ -140,20 +168,6 @@ class DetailViewModel(
                 R.id.chip_priority_high -> Priority.HIGH
                 else -> Priority.NORMAL
             }
-    }
-
-    class DetailViewModelFactory(
-        private val resources: Resources,
-        private val repository: GoalRepository,
-        private val view: DetailFragment
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return DetailViewModel(resources, repository, view) as T
-            }
-            throw IllegalArgumentException("Unknown viewmodel class")
-        }
     }
 
     private fun Genre.isGenreNotSet(): Boolean {

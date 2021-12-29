@@ -8,6 +8,7 @@ import com.example.aimissionlite.models.ILandingPageUseCase
 import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +19,7 @@ class LandingPageViewModel @Inject constructor(
 ) : ViewModel() {
     var isDeleteAllGoals: LiveData<Boolean>? = null
 
-    val allGoals: LiveData<List<Goal>> = useCase.getAllGoals().asLiveData()
+    val allGoals: Flow<List<Goal>> = useCase.getAllGoals()
     private var lastDeletedGoal: Goal = Goal.EMPTY
 
     val uiEvent = MutableSharedFlow<LandingPageUiEvent>()

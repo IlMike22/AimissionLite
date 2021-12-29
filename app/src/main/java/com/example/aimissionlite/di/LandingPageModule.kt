@@ -32,14 +32,4 @@ object LandingPageModule {
             goalRepository = goalRepository,
             settingsRepository = settingsRepository
         )
-
-//    @Provides
-//    @Singleton
-//    fun provideSettingsRepository(@ApplicationContext context: Context): ISettingsRepository =
-//        SettingsRepository(context)
-
-//    @Provides
-//    @Singleton
-//    fun provideNavigation(navController: NavController): ILandingPageNavigation =
-//        LandingPageNavigation(navController)
 }

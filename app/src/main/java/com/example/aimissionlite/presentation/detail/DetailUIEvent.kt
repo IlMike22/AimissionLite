@@ -1,0 +1,7 @@
+package com.example.aimissionlite.presentation.detail
+
+sealed class DetailUIEvent<T>(val data: T? = null) {
+    class ShowValidationResult<T>(statusCode: T? = null) : DetailUIEvent<T>(data = statusCode)
+    class HideKeyboard<T> : DetailUIEvent<T>()
+    class NavigateToLandingPage<T>: DetailUIEvent<T>()
+}
