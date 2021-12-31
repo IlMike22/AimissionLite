@@ -178,7 +178,7 @@
             style="@style/fragment_detail_button_save_goal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> viewModel.onButtonClicked()}"
+            android:onClick="@{() -> viewModel.onSaveGoalButtonClicked()}"
             android:text="@{viewModel.buttonText}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

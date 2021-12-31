@@ -8,7 +8,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
 @BindingAdapter("android:getSelectedItem")
-fun getSelectedChipGroupItem(chipGroup: ChipGroup, selectedId: MutableLiveData<Int>) {
+fun getSelectedChipGroupItem(chipGroup: ChipGroup, selectedId: MutableLiveData<Int>?) {
     chipGroup.setOnCheckedChangeListener { group, _ ->
 
         if (group.checkedChipIds.isEmpty()) {
@@ -16,7 +16,7 @@ fun getSelectedChipGroupItem(chipGroup: ChipGroup, selectedId: MutableLiveData<I
         }
 
         val checkedChipId = group.checkedChipIds.first()
-        selectedId.value = checkedChipId
+        selectedId?.value = checkedChipId
     }
 }
 

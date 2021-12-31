@@ -1,16 +1,15 @@
 package com.example.aimissionlite.presentation.detail
 
-import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.aimissionlite.R
-import com.example.aimissionlite.data.Converters.Companion.toGenreId
-import com.example.aimissionlite.data.Converters.Companion.toPriorityId
 import com.example.aimissionlite.domain.common.repository.IGoalRepository
 import com.example.aimissionlite.models.domain.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -20,6 +19,9 @@ class DetailViewModel @Inject constructor(
     private val repository: IGoalRepository
 ) : ViewModel() {
     val uiEvent = MutableSharedFlow<DetailUIEvent<GoalValidationStatusCode>>()
+
+    private val _state = MutableStateFlow(DetailState.ShowEditGoal(Goal.EMPTY))
+    val state = _state.asStateFlow()
 
     private var currentGoal = Goal.EMPTY
     var buttonText: String = ""
@@ -52,7 +54,7 @@ class DetailViewModel @Inject constructor(
         _selectedChipPriority?.value = genre
     }
 
-    fun onButtonClicked() {
+    fun onSaveGoalButtonClicked() {
         if (currentGoal != Goal.EMPTY) {
             updateGoal()
             return
@@ -124,10 +126,7 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun showGoal(goal: Goal) {
-        _goalTitle?.value = goal.title
-        _goalDescription?.value = goal.description
-        _selectedChipGenre?.value = goal.genre.toGenreId()
-        _selectedChipPriority?.value = goal.priority.toPriorityId()
+        _state.value = DetailState.ShowEditGoal(goal)
     }
 
     private fun getCurrentDate(): String = LocalDateTime.now().toString()

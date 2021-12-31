@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
@@ -16,6 +17,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aimissionlite.R
+import com.example.aimissionlite.data.BUNDLE_ID_GOAL
 import com.example.aimissionlite.presentation.landing_page.LandingPageUiEvent
 import com.example.aimissionlite.presentation.landing_page.LandingPageViewModel
 import com.example.aimissionlite.presentation.landing_page.adapter.GoalsAdapter
@@ -111,7 +113,9 @@ class LandingPageFragment : Fragment() {
                         job?.cancel()
                     }
                     is LandingPageUiEvent.NavigateToAddGoal -> {
-                        findNavController().navigate(R.id.action_LandingPageFragment_to_AddGoalFragment)
+                        val bundle = bundleOf(BUNDLE_ID_GOAL to uiEvent.goal?.id)
+                        findNavController().navigate(R.id.action_LandingPageFragment_to_AddGoalFragment, bundle)
+                        job?.cancel()
                     }
                 }
             }

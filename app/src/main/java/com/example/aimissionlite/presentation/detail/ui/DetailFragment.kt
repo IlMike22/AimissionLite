@@ -10,6 +10,9 @@ import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
 import com.example.aimissionlite.BR
 import com.example.aimissionlite.MainActivity
@@ -17,11 +20,14 @@ import com.example.aimissionlite.R
 import com.example.aimissionlite.data.BUNDLE_ID_GOAL
 import com.example.aimissionlite.databinding.FragmentDetailBinding
 import com.example.aimissionlite.models.domain.GoalValidationStatusCode
+import com.example.aimissionlite.presentation.detail.DetailState
 import com.example.aimissionlite.presentation.detail.DetailUIEvent
 import com.example.aimissionlite.presentation.detail.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -46,6 +52,23 @@ class DetailFragment : Fragment() {
         }
 
         viewModel.buttonText = resources.getString(R.string.fragment_detail_add_goal_button_text)
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+                    when (state) {
+                        is DetailState.ShowEditGoal -> {
+                            edit_text_title.setText(state.data?.title)
+                            edit_text_description.setText(state.data?.description)
+
+//                        _goalDescription.value = goal.description
+//                        _selectedChipGenre?.value = goal.genre.toGenreId()
+//                        _selectedChipPriority?.value = goal.priority.toPriorityId()
+                        }
+                    }
+                }
+            }
+        }
 
         return binding.root
     }
@@ -79,6 +102,7 @@ class DetailFragment : Fragment() {
                     is DetailUIEvent.NavigateToLandingPage -> navigateToLandingPage()
                 }
             }
+
         }
     }
 
