@@ -39,6 +39,8 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val TAG = "DetailFragment"
+
         val binding: FragmentDetailBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
         binding.lifecycleOwner = this
@@ -75,22 +77,6 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.goalTitle?.observe(viewLifecycleOwner, { title ->
-            viewModel.setGoalTitle(title)
-        })
-
-        viewModel.goalDescription?.observe(viewLifecycleOwner, { description ->
-            viewModel.setGoalDescription(description)
-        })
-
-        viewModel.selectedChipGenre?.observe(viewLifecycleOwner, { genre ->
-            viewModel.setSelectedChipGenre(genre)
-        })
-
-        viewModel.selectedChipPriority?.observe(viewLifecycleOwner, { priority ->
-            viewModel.setSelectedChipPriority(priority)
-        })
 
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiEvent.collectLatest { uiEvent ->

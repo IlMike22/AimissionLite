@@ -26,33 +26,11 @@ class DetailViewModel @Inject constructor(
     private var currentGoal = Goal.EMPTY
     var buttonText: String = ""
 
-    private val _goalTitle: MutableLiveData<String>? = null
-    val goalTitle = _goalTitle
+    val goalTitle = MutableStateFlow<String?>(null)
+    val goalDescription = MutableStateFlow<String?>(null)
+    val selectedChipGenre = MutableStateFlow<Int?>(null)
+    val selectedChipPriority = MutableStateFlow<Int?>(null)
 
-    fun setGoalTitle(title: String) {
-        _goalTitle?.value = title
-    }
-
-    private val _goalDescription: MutableLiveData<String>? = null
-    val goalDescription = _goalDescription
-
-    fun setGoalDescription(description: String) {
-        _goalDescription?.value = description
-    }
-
-    private val _selectedChipGenre: MutableLiveData<Int>? = null
-    val selectedChipGenre = _selectedChipGenre
-
-    fun setSelectedChipGenre(genre: Int) {
-        _selectedChipGenre?.value = genre
-    }
-
-    private val _selectedChipPriority: MutableLiveData<Int>? = null
-    val selectedChipPriority = _selectedChipPriority
-
-    fun setSelectedChipPriority(genre: Int) {
-        _selectedChipPriority?.value = genre
-    }
 
     fun onSaveGoalButtonClicked() {
         if (currentGoal != Goal.EMPTY) {
@@ -73,14 +51,14 @@ class DetailViewModel @Inject constructor(
 
         currentGoal = currentGoal.copy(
             id = currentGoal.id,
-            title = _goalTitle?.value.orEmpty(),
-            description = _goalDescription?.value.orEmpty(),
+            title = goalTitle.value.orEmpty(),
+            description = goalDescription.value.orEmpty(),
             creationDate = currentGoal.creationDate,
             changeDate = getCurrentDate(),
             isRepeated = currentGoal.isRepeated,
-            genre = _selectedChipGenre?.toGenre() ?: Genre.UNKNOWN,
+            genre = selectedChipGenre.toGenre() ?: Genre.UNKNOWN,
             status = currentGoal.status,
-            priority = _selectedChipPriority?.toPriority() ?: Priority.UNKNOWN
+            priority = selectedChipPriority.toPriority() ?: Priority.UNKNOWN
         )
 
         if (validationStatusCode == GoalValidationStatusCode.OK) {
@@ -101,14 +79,14 @@ class DetailViewModel @Inject constructor(
 
         val newGoal = Goal(
             id = 0,
-            title = goalTitle?.value.orEmpty(),
-            description = goalDescription?.value.orEmpty(),
+            title = goalTitle.value.orEmpty(),
+            description = goalDescription.value.orEmpty(),
             creationDate = currentDate,
             changeDate = currentDate,
             isRepeated = false,
-            genre = selectedChipGenre?.toGenre() ?: Genre.UNKNOWN,
+            genre = selectedChipGenre.toGenre(),
             status = Status.TODO,
-            priority = selectedChipPriority?.toPriority() ?: Priority.UNKNOWN
+            priority = selectedChipPriority.toPriority()
         )
 
         val validationStatusCode = isGoalValid(newGoal)
@@ -150,7 +128,7 @@ class DetailViewModel @Inject constructor(
     }
 
     companion object {
-        private fun MutableLiveData<Int>.toGenre(): Genre =
+        private fun MutableStateFlow<Int?>.toGenre(): Genre =
             when (this.value) {
                 R.id.chip_genre_business -> Genre.BUSINESS
                 R.id.chip_genre_socialising -> Genre.SOCIALISING
@@ -161,7 +139,7 @@ class DetailViewModel @Inject constructor(
                 else -> Genre.UNKNOWN
             }
 
-        private fun MutableLiveData<Int>.toPriority(): Priority =
+        private fun MutableStateFlow<Int?>.toPriority(): Priority =
             when (this.value) {
                 R.id.chip_priority_low -> Priority.LOW
                 R.id.chip_priority_high -> Priority.HIGH

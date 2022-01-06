@@ -2,13 +2,13 @@ package com.example.aimissionlite.bindingadapter
 
 import androidx.core.view.get
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.MutableLiveData
 import com.example.aimissionlite.data.ChipSelectionException
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @BindingAdapter("android:getSelectedItem")
-fun getSelectedChipGroupItem(chipGroup: ChipGroup, selectedId: MutableLiveData<Int>?) {
+fun getSelectedChipGroupItem(chipGroup: ChipGroup, selectedId: MutableStateFlow<Int?>) {
     chipGroup.setOnCheckedChangeListener { group, _ ->
 
         if (group.checkedChipIds.isEmpty()) {
@@ -21,7 +21,7 @@ fun getSelectedChipGroupItem(chipGroup: ChipGroup, selectedId: MutableLiveData<I
 }
 
 @BindingAdapter("android:setChipGroupItem")
-fun ChipGroup.setSelectedChipGroupItem(selectedId: MutableLiveData<Int>?) {
+fun ChipGroup.setSelectedChipGroupItem(selectedId: MutableStateFlow<Int?>) {
     val selectedChipId = selectedId?.value ?: return
 
     if (selectedChipId >= this.childCount || selectedChipId <= 0) {
