@@ -2,7 +2,6 @@ package com.example.aimissionlite.presentation.info
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.example.aimissionlite.core.Resource
 import com.example.aimissionlite.domain.info.use_case.GetInformationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,15 +26,4 @@ class InfoViewModel @Inject constructor(
             )
         )
     }
-
-//    class InfoViewModelFactory(
-//    ) : ViewModelProvider.Factory {
-//        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-//            if (modelClass.isAssignableFrom(InfoViewModel::class.java)) {
-//                @Suppress("UNCHECKED_CAST")
-//                return InfoViewModel() as T
-//            }
-//            throw IllegalArgumentException("Unknown ViewModel class")
-//        }
-//    }
 }

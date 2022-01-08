@@ -18,6 +18,8 @@ import com.example.aimissionlite.BR
 import com.example.aimissionlite.MainActivity
 import com.example.aimissionlite.R
 import com.example.aimissionlite.data.BUNDLE_ID_GOAL
+import com.example.aimissionlite.data.Converters.Companion.toGenreId
+import com.example.aimissionlite.data.Converters.Companion.toPriorityId
 import com.example.aimissionlite.databinding.FragmentDetailBinding
 import com.example.aimissionlite.models.domain.GoalValidationStatusCode
 import com.example.aimissionlite.presentation.detail.DetailState
@@ -34,13 +36,12 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
     private val viewModel: DetailViewModel by viewModels()
+    val TAG = "DetailFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val TAG = "DetailFragment"
-
         val binding: FragmentDetailBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
         binding.lifecycleOwner = this
@@ -55,22 +56,20 @@ class DetailFragment : Fragment() {
 
         viewModel.buttonText = resources.getString(R.string.fragment_detail_add_goal_button_text)
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { state ->
-                    when (state) {
-                        is DetailState.ShowEditGoal -> {
-                            edit_text_title.setText(state.data?.title)
-                            edit_text_description.setText(state.data?.description)
-
-//                        _goalDescription.value = goal.description
-//                        _selectedChipGenre?.value = goal.genre.toGenreId()
-//                        _selectedChipPriority?.value = goal.priority.toPriorityId()
-                        }
-                    }
-                }
-            }
-        }
+//        lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                viewModel.state.collect { state ->
+//                    when (state) {
+//                        is DetailState.ShowEditGoal -> {
+//                            edit_text_title.setText(state.data?.title)
+//                            edit_text_description.setText(state.data?.description)
+//                            chip_group_genre.check(state.data?.genre?.toGenreId() ?: -1)
+//                            chip_group_priority.check(state.data?.priority?.toPriorityId() ?: -1)
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         return binding.root
     }
@@ -113,8 +112,8 @@ class DetailFragment : Fragment() {
             (activity as MainActivity).hideKeyboard(currentFocusedView)
         } catch (error: Throwable) {
             Log.e(
-                "AimissionLite",
-                "DetailFragment: Unable to call activity for hiding keyboard. Details: $error"
+                TAG,
+                "Unable to call activity for hiding keyboard. Details: $error"
             )
         }
     }

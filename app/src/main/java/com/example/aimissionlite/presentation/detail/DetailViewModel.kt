@@ -1,9 +1,12 @@
 package com.example.aimissionlite.presentation.detail
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.aimissionlite.AimissionApplication
 import com.example.aimissionlite.R
+import com.example.aimissionlite.data.Converters.Companion.toGenreId
+import com.example.aimissionlite.data.Converters.Companion.toPriorityId
 import com.example.aimissionlite.domain.common.repository.IGoalRepository
 import com.example.aimissionlite.models.domain.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,15 +19,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val repository: IGoalRepository
-) : ViewModel() {
+    private val repository: IGoalRepository,
+    app: Application
+) : AndroidViewModel(app) {
     val uiEvent = MutableSharedFlow<DetailUIEvent<GoalValidationStatusCode>>()
+    val resourceProvider = getApplication<AimissionApplication>()
 
     private val _state = MutableStateFlow(DetailState.ShowEditGoal(Goal.EMPTY))
     val state = _state.asStateFlow()
 
     private var currentGoal = Goal.EMPTY
-    var buttonText: String = ""
+    var buttonText: String = resourceProvider.getString(R.string.button_done)
 
     val goalTitle = MutableStateFlow<String?>(null)
     val goalDescription = MutableStateFlow<String?>(null)
@@ -43,6 +48,12 @@ class DetailViewModel @Inject constructor(
 
     fun getAndShowGoal(id: Int) = viewModelScope.launch {
         currentGoal = repository.getGoal(id)
+
+        goalTitle.value = currentGoal.title
+        goalDescription.value = currentGoal.description
+        selectedChipGenre.value = currentGoal.genre.toGenreId()
+        selectedChipPriority.value = currentGoal.priority.toPriorityId()
+
         showGoal(currentGoal)
     }
 

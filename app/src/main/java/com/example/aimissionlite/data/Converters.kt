@@ -75,23 +75,23 @@ class Converters {
         @TypeConverter
         fun Genre.toGenreId():Int {
             return when (this) {
+                Genre.UNKNOWN -> -1
                 Genre.PARTNERSHIP -> 0
                 Genre.BUSINESS -> 1
                 Genre.FITNESS -> 2
                 Genre.MONEY -> 3
                 Genre.SOCIALISING -> 4
                 Genre.HEALTH -> 5
-                Genre.UNKNOWN -> 6
             }
         }
 
         @TypeConverter
         fun Priority.toPriorityId():Int {
             return when (this) {
+                Priority.UNKNOWN -> -1
                 Priority.HIGH -> 0
                 Priority.NORMAL -> 1
                 Priority.LOW -> 2
-                else -> -1
             }
         }
     }
