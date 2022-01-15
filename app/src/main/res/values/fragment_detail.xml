@@ -17,10 +17,10 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="fragment_detail_chip_genre_partnership_text">Partnership</string>
     <string name="fragment_detail_chip_genre_socialising_text">Socialising</string>
-    <string name="fagment_detail_chip_genre_health_text">Health</string>
-    <string name="fagment_detail_chip_genre_money_text">Money</string>
-    <string name="fagment_detail_chip_genre_fittness_text">Fittness</string>
-    <string name="fagment_detail_chip_genre_business_text">Business</string>
+    <string name="fragment_detail_chip_genre_health_text">Health</string>
+    <string name="fragment_detail_chip_genre_money_text">Money</string>
+    <string name="fragment_detail_chip_genre_fitness_text">Fittness</string>
+    <string name="fragment_detail_chip_genre_business_text">Business</string>
 
     <string name="fragment_detail_add_goal_button_text">Fertig</string>
 

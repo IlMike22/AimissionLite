@@ -23,7 +23,7 @@ class DetailViewModel @Inject constructor(
     app: Application
 ) : AndroidViewModel(app) {
     val uiEvent = MutableSharedFlow<DetailUIEvent<GoalValidationStatusCode>>()
-    val resourceProvider = getApplication<AimissionApplication>()
+    private val resourceProvider = getApplication<AimissionApplication>()
 
     private val _state = MutableStateFlow(DetailState.ShowEditGoal(Goal.EMPTY))
     val state = _state.asStateFlow()
@@ -143,7 +143,7 @@ class DetailViewModel @Inject constructor(
             when (this.value) {
                 R.id.chip_genre_business -> Genre.BUSINESS
                 R.id.chip_genre_socialising -> Genre.SOCIALISING
-                R.id.chip_genre_fittness -> Genre.FITNESS
+                R.id.chip_genre_fitness -> Genre.FITNESS
                 R.id.chip_genre_money -> Genre.MONEY
                 R.id.chip_genre_partnership -> Genre.PARTNERSHIP
                 R.id.chip_genre_health -> Genre.HEALTH

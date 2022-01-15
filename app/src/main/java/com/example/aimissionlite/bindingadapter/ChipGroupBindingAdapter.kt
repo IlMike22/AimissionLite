@@ -7,11 +7,12 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.flow.MutableStateFlow
 
-@BindingAdapter("android:getSelectedItem") //todo really needed this adapter?
-fun getSelectedChipGroupItem(chipGroup: ChipGroup, selectedId: MutableStateFlow<Int?>) {
-    chipGroup.setOnCheckedChangeListener { group, _ ->
+@BindingAdapter("android:getSelectedItem")
+fun ChipGroup.getSelectedChipGroupItem(selectedId: MutableStateFlow<Int?>) {
+    this.setOnCheckedChangeListener { group, _ ->
+        val selectedChipId = selectedId.value ?: return@setOnCheckedChangeListener
 
-        if (group.checkedChipIds.isEmpty()) {
+        if (group.checkedChipIds.isEmpty() || selectedChipId >= childCount) {
             return@setOnCheckedChangeListener
         }
 

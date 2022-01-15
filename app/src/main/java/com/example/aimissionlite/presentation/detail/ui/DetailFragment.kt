@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,13 +19,15 @@ import com.example.aimissionlite.BR
 import com.example.aimissionlite.MainActivity
 import com.example.aimissionlite.R
 import com.example.aimissionlite.data.BUNDLE_ID_GOAL
-import com.example.aimissionlite.data.Converters.Companion.toGenreId
-import com.example.aimissionlite.data.Converters.Companion.toPriorityId
 import com.example.aimissionlite.databinding.FragmentDetailBinding
+import com.example.aimissionlite.models.domain.Genre
 import com.example.aimissionlite.models.domain.GoalValidationStatusCode
+import com.example.aimissionlite.models.domain.Priority
 import com.example.aimissionlite.presentation.detail.DetailState
 import com.example.aimissionlite.presentation.detail.DetailUIEvent
 import com.example.aimissionlite.presentation.detail.DetailViewModel
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.coroutines.CoroutineScope
@@ -56,20 +59,33 @@ class DetailFragment : Fragment() {
 
         viewModel.buttonText = resources.getString(R.string.fragment_detail_add_goal_button_text)
 
-//        lifecycleScope.launch {
-//            repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModel.state.collect { state ->
-//                    when (state) {
-//                        is DetailState.ShowEditGoal -> {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+                    when (state) {
+                        is DetailState.ShowEditGoal -> {
+                            try {
+                                val selectedChipId = state.data?.genre?.toSelectedChipId()
+                                val chipToSelect = (chip_group_genre as ChipGroup)[selectedChipId?:-1]
+                                (chipToSelect as Chip).isChecked = true
+                            }
+                            catch(exception:Throwable) {
+                                Log.e(TAG,"error setting chip id ${exception.message}")
+                            }
+
+
+                            chip_group_priority.checkedChipIds.addAll(
+                                state.data?.priority?.toSelectedChipId() ?: emptyList()
+                            )
 //                            edit_text_title.setText(state.data?.title)
 //                            edit_text_description.setText(state.data?.description)
 //                            chip_group_genre.check(state.data?.genre?.toGenreId() ?: -1)
 //                            chip_group_priority.check(state.data?.priority?.toPriorityId() ?: -1)
-//                        }
-//                    }
-//                }
-//            }
-//        }
+                        }
+                    }
+                }
+            }
+        }
 
         return binding.root
     }
@@ -124,5 +140,28 @@ class DetailFragment : Fragment() {
             getString(id),
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    private fun Genre.toSelectedChipId(): Int {
+        return when (this) {
+            Genre.BUSINESS -> 0
+            Genre.FITNESS -> 1
+            Genre.MONEY -> 2
+            Genre.PARTNERSHIP -> 3
+            Genre.SOCIALISING -> 4
+            Genre.HEALTH -> 5
+            Genre.UNKNOWN -> -1
+        }
+    }
+
+    private fun Priority.toSelectedChipId(): List<Int> {
+        when (this) {
+            Priority.LOW -> 0
+            Priority.HIGH -> 1
+            Priority.NORMAL -> 2
+            Priority.UNKNOWN -> -1
+        }.run {
+            return listOf(this)
+        }
     }
 }

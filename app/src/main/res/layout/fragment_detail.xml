@@ -79,34 +79,35 @@
                     style="@style/common_chip_group_style"
                     android:layout_width="match_parent"
                     android:layout_height="111dp"
-                    android:getSelectedItem="@{viewModel.selectedChipGenre}"
-                    android:setChipGroupItem="@{viewModel.selectedChipGenre}"
                     app:layout_constraintBottom_toTopOf="@+id/chip_group_priority"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_text_description"
                     app:singleSelection="true">
 
+<!--                    android:getSelectedItem="@{viewModel.selectedChipGenre}"-->
+<!--                    android:setChipGroupItem="@{viewModel.selectedChipGenre}"-->
+
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_genre_business"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="@string/fagment_detail_chip_genre_business_text" />
+                        android:text="@string/fragment_detail_chip_genre_business_text" />
 
                     <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_genre_fittness"
+                        android:id="@+id/chip_genre_fitness"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="@string/fagment_detail_chip_genre_fittness_text" />
+                        android:text="@string/fragment_detail_chip_genre_fitness_text" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_genre_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="@string/fagment_detail_chip_genre_money_text" />
+                        android:text="@string/fragment_detail_chip_genre_money_text" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_genre_partnership"
@@ -127,7 +128,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="@string/fagment_detail_chip_genre_health_text" />
+                        android:text="@string/fragment_detail_chip_genre_health_text" />
 
                 </com.google.android.material.chip.ChipGroup>
 
@@ -145,13 +146,14 @@
                     style="@style/common_chip_group_style"
                     android:layout_width="match_parent"
                     android:layout_height="111dp"
-                    android:getSelectedItem="@{viewModel.selectedChipPriority}"
-                    android:setChipGroupItem="@{viewModel.selectedChipPriority}"
                     app:layout_constraintBottom_toTopOf="@+id/button_save_goal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textview_header_priority"
                     app:singleSelection="true">
+
+<!--                    android:getSelectedItem="@{viewModel.selectedChipPriority}"-->
+<!--                    android:setChipGroupItem="@{viewModel.selectedChipPriority}"-->
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_priority_low"
