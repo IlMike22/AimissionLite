@@ -33,9 +33,21 @@ class DetailViewModel @Inject constructor(
 
     val goalTitle = MutableStateFlow<String?>(null)
     val goalDescription = MutableStateFlow<String?>(null)
-    val selectedChipGenre = MutableStateFlow<Int?>(null)
-    val selectedChipPriority = MutableStateFlow<Int?>(null)
 
+    var selectedChipGenre: Int? = null
+    var selectedChipPriority: Int? = null
+
+
+    fun setSelectedChipGroupItem(chipGroup: ChipGroupName, selectedId: Int) {
+        when (chipGroup) {
+            ChipGroupName.GENRE -> {
+                selectedChipGenre = selectedId
+            }
+            ChipGroupName.PRIORITY -> {
+                selectedChipPriority = selectedId
+            }
+        }
+    }
 
     fun onSaveGoalButtonClicked() {
         if (currentGoal != Goal.EMPTY) {
@@ -51,8 +63,8 @@ class DetailViewModel @Inject constructor(
 
         goalTitle.value = currentGoal.title
         goalDescription.value = currentGoal.description
-        selectedChipGenre.value = currentGoal.genre.toGenreId()
-        selectedChipPriority.value = currentGoal.priority.toPriorityId()
+        selectedChipGenre = currentGoal.genre.toGenreId()
+        selectedChipPriority = currentGoal.priority.toPriorityId()
 
         showGoal(currentGoal)
     }
@@ -67,9 +79,9 @@ class DetailViewModel @Inject constructor(
             creationDate = currentGoal.creationDate,
             changeDate = getCurrentDate(),
             isRepeated = currentGoal.isRepeated,
-            genre = selectedChipGenre.toGenre() ?: Genre.UNKNOWN,
+            genre = selectedChipGenre?.toGenre() ?: Genre.UNKNOWN,
             status = currentGoal.status,
-            priority = selectedChipPriority.toPriority() ?: Priority.UNKNOWN
+            priority = selectedChipPriority?.toPriority() ?: Priority.UNKNOWN
         )
 
         if (validationStatusCode == GoalValidationStatusCode.OK) {
@@ -95,9 +107,9 @@ class DetailViewModel @Inject constructor(
             creationDate = currentDate,
             changeDate = currentDate,
             isRepeated = false,
-            genre = selectedChipGenre.toGenre(),
+            genre = selectedChipGenre?.toGenre()?:Genre.UNKNOWN,
             status = Status.TODO,
-            priority = selectedChipPriority.toPriority()
+            priority = selectedChipPriority?.toPriority()?:Priority.UNKNOWN
         )
 
         val validationStatusCode = isGoalValid(newGoal)
@@ -139,8 +151,8 @@ class DetailViewModel @Inject constructor(
     }
 
     companion object {
-        private fun MutableStateFlow<Int?>.toGenre(): Genre =
-            when (this.value) {
+        private fun Int.toGenre(): Genre =
+            when (this) {
                 R.id.chip_genre_business -> Genre.BUSINESS
                 R.id.chip_genre_socialising -> Genre.SOCIALISING
                 R.id.chip_genre_fitness -> Genre.FITNESS
@@ -150,8 +162,8 @@ class DetailViewModel @Inject constructor(
                 else -> Genre.UNKNOWN
             }
 
-        private fun MutableStateFlow<Int?>.toPriority(): Priority =
-            when (this.value) {
+        private fun Int.toPriority(): Priority =
+            when (this) {
                 R.id.chip_priority_low -> Priority.LOW
                 R.id.chip_priority_high -> Priority.HIGH
                 else -> Priority.NORMAL

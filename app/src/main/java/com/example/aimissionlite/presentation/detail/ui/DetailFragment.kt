@@ -21,8 +21,10 @@ import com.example.aimissionlite.R
 import com.example.aimissionlite.data.BUNDLE_ID_GOAL
 import com.example.aimissionlite.databinding.FragmentDetailBinding
 import com.example.aimissionlite.models.domain.Genre
+import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.GoalValidationStatusCode
 import com.example.aimissionlite.models.domain.Priority
+import com.example.aimissionlite.presentation.detail.ChipGroupName
 import com.example.aimissionlite.presentation.detail.DetailState
 import com.example.aimissionlite.presentation.detail.DetailUIEvent
 import com.example.aimissionlite.presentation.detail.DetailViewModel
@@ -64,23 +66,7 @@ class DetailFragment : Fragment() {
                 viewModel.state.collect { state ->
                     when (state) {
                         is DetailState.ShowEditGoal -> {
-                            try {
-                                val selectedChipId = state.data?.genre?.toSelectedChipId()
-                                val chipToSelect = (chip_group_genre as ChipGroup)[selectedChipId?:-1]
-                                (chipToSelect as Chip).isChecked = true
-                            }
-                            catch(exception:Throwable) {
-                                Log.e(TAG,"error setting chip id ${exception.message}")
-                            }
-
-
-                            chip_group_priority.checkedChipIds.addAll(
-                                state.data?.priority?.toSelectedChipId() ?: emptyList()
-                            )
-//                            edit_text_title.setText(state.data?.title)
-//                            edit_text_description.setText(state.data?.description)
-//                            chip_group_genre.check(state.data?.genre?.toGenreId() ?: -1)
-//                            chip_group_priority.check(state.data?.priority?.toPriorityId() ?: -1)
+                            setChips(state)
                         }
                     }
                 }
@@ -103,13 +89,39 @@ class DetailFragment : Fragment() {
                     is DetailUIEvent.NavigateToLandingPage -> navigateToLandingPage()
                 }
             }
+        }
 
+        chip_group_priority.setOnCheckedChangeListener { _, checkedId ->
+            viewModel.setSelectedChipGroupItem(
+                ChipGroupName.PRIORITY,
+                checkedId
+            )
+        }
+
+        chip_group_genre.setOnCheckedChangeListener { _, checkedId ->
+            viewModel.setSelectedChipGroupItem(
+                ChipGroupName.GENRE,
+                checkedId
+            )
+        }
+    }
+
+    private fun setChips(state: DetailState.ShowEditGoal<Goal>) {
+        try {
+            val selectedGenreChipId = state.data?.genre?.toSelectedChipId()
+            val selectedPriorityChipId = state.data?.priority?.toSelectedChipId()
+            val chipGenreToSelect = (chip_group_genre as ChipGroup)[selectedGenreChipId ?: -1]
+            val chipPriorityToSelect = (chip_group_priority as ChipGroup)[selectedGenreChipId ?: -1]
+            (chipGenreToSelect as Chip).isChecked = true
+            (chipPriorityToSelect as Chip).isChecked = true
+        } catch (exception: Throwable) {
+            Log.e(TAG, "Error setting chip id ${exception.message}")
         }
     }
 
     private fun navigateToLandingPage() {
         val bundle =
-            bundleOf(resources.getString(R.string.bundle_argument_goal_title) to viewModel.goalTitle?.value)
+            bundleOf(resources.getString(R.string.bundle_argument_goal_title) to viewModel.goalTitle.value)
         NavHostFragment.findNavController(this)
             .navigate(R.id.action_SecondFragment_to_FirstFragment, bundle)
     }
@@ -154,14 +166,12 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun Priority.toSelectedChipId(): List<Int> {
-        when (this) {
+    private fun Priority.toSelectedChipId(): Int {
+        return when (this) {
             Priority.LOW -> 0
             Priority.HIGH -> 1
             Priority.NORMAL -> 2
             Priority.UNKNOWN -> -1
-        }.run {
-            return listOf(this)
         }
     }
 }
