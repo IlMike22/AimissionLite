@@ -27,7 +27,8 @@
     <string name="fragment_detail_goal_validation_status_no_title">You have no title set.</string>
     <string name="fragment_detail_goal_validation_status_no_description">You have no description set.</string>
     <string name="fragment_detail_goal_validation_status_no_genre">You have no genre set.</string>
-    <string name="fragment_detail_goal_validation_status_success">Your goal was successfully created!</string>
+    <string name="fragment_detail_goal_created_validation_status_success">Your goal was successfully created!</string>
+    <string name="fragment_detail_goal_updated_validation_status_success">Your goal was successfully updated!</string>
 
     <!--styles -->
     <style name="text_view">

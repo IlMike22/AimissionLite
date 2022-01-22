@@ -20,10 +20,7 @@ import com.example.aimissionlite.MainActivity
 import com.example.aimissionlite.R
 import com.example.aimissionlite.data.BUNDLE_ID_GOAL
 import com.example.aimissionlite.databinding.FragmentDetailBinding
-import com.example.aimissionlite.models.domain.Genre
-import com.example.aimissionlite.models.domain.Goal
-import com.example.aimissionlite.models.domain.GoalValidationStatusCode
-import com.example.aimissionlite.models.domain.Priority
+import com.example.aimissionlite.models.domain.*
 import com.example.aimissionlite.presentation.detail.ChipGroupName
 import com.example.aimissionlite.presentation.detail.DetailState
 import com.example.aimissionlite.presentation.detail.DetailUIEvent
@@ -83,7 +80,7 @@ class DetailFragment : Fragment() {
             viewModel.uiEvent.collectLatest { uiEvent ->
                 when (uiEvent) {
                     is DetailUIEvent.ShowValidationResult -> {
-                        showValidationResult(uiEvent.data ?: GoalValidationStatusCode.UNKNOWN)
+                        showValidationResult(uiEvent.data ?: GoalValidationStatusCode.EMPTY)
                     }
                     is DetailUIEvent.HideKeyboard -> hideKeyboard(activity?.currentFocus)
                     is DetailUIEvent.NavigateToLandingPage -> navigateToLandingPage()
@@ -91,6 +88,10 @@ class DetailFragment : Fragment() {
             }
         }
 
+        setupChipGroupCheckedChangeListeners()
+    }
+
+    private fun setupChipGroupCheckedChangeListeners() {
         chip_group_priority.setOnCheckedChangeListener { _, checkedId ->
             viewModel.setSelectedChipGroupItem(
                 ChipGroupName.PRIORITY,
@@ -110,9 +111,12 @@ class DetailFragment : Fragment() {
         try {
             val selectedGenreChipId = state.data?.genre?.toSelectedChipId()
             val selectedPriorityChipId = state.data?.priority?.toSelectedChipId()
+
             val chipGenreToSelect = (chip_group_genre as ChipGroup)[selectedGenreChipId ?: -1]
-            val chipPriorityToSelect = (chip_group_priority as ChipGroup)[selectedGenreChipId ?: -1]
             (chipGenreToSelect as Chip).isChecked = true
+
+            val chipPriorityToSelect =
+                (chip_group_priority as ChipGroup)[selectedPriorityChipId ?: -1]
             (chipPriorityToSelect as Chip).isChecked = true
         } catch (exception: Throwable) {
             Log.e(TAG, "Error setting chip id ${exception.message}")
@@ -126,13 +130,23 @@ class DetailFragment : Fragment() {
             .navigate(R.id.action_SecondFragment_to_FirstFragment, bundle)
     }
 
-    private fun showValidationResult(validationStatusCode: GoalValidationStatusCode) {
-        when (validationStatusCode) {
-            GoalValidationStatusCode.NO_TITLE -> showToast(R.string.fragment_detail_goal_validation_status_no_title)
-            GoalValidationStatusCode.NO_DESCRIPTION -> showToast(R.string.fragment_detail_goal_validation_status_no_description)
-            GoalValidationStatusCode.NO_GENRE -> showToast(R.string.fragment_detail_goal_validation_status_no_genre)
-            else -> showToast(R.string.fragment_detail_goal_validation_status_success)
+    private fun showValidationResult(goalValidationStatusCode: GoalValidationStatusCode) {
+        when (goalValidationStatusCode.statusCode) {
+            ValidationStatusCode.NO_TITLE -> showToast(R.string.fragment_detail_goal_validation_status_no_title)
+            ValidationStatusCode.NO_DESCRIPTION -> showToast(R.string.fragment_detail_goal_validation_status_no_description)
+            ValidationStatusCode.NO_GENRE -> showToast(R.string.fragment_detail_goal_validation_status_no_genre)
+            else -> showSuccessMessage(goalValidationStatusCode.isGoalUpdated)
         }
+    }
+
+    private fun showSuccessMessage(isGoalUpdated: Boolean) {
+        val messageId = if (isGoalUpdated) {
+            R.string.fragment_detail_goal_updated_validation_status_success
+        } else {
+            R.string.fragment_detail_goal_created_validation_status_success
+        }
+
+        showToast(messageId)
     }
 
     private fun hideKeyboard(currentFocusedView: View?) {

@@ -51,7 +51,19 @@ class DetailViewModel @Inject constructor(
 
     fun onSaveGoalButtonClicked() {
         if (currentGoal != Goal.EMPTY) {
-            updateGoal()
+            val newGoal = Goal(
+                id = currentGoal.id,
+                title = goalTitle.value.orEmpty(),
+                description = goalDescription.value.orEmpty(),
+                creationDate = currentGoal.creationDate,
+                changeDate = getCurrentDate(),
+                isRepeated = currentGoal.isRepeated,
+                genre = selectedChipGenre?.toGenre() ?: Genre.UNKNOWN,
+                status = currentGoal.status,
+                priority = selectedChipPriority?.toPriority() ?: Priority.UNKNOWN
+            )
+
+            updateGoal(newGoal)
             return
         }
 
@@ -69,22 +81,20 @@ class DetailViewModel @Inject constructor(
         showGoal(currentGoal)
     }
 
-    private fun updateGoal() {
-        val validationStatusCode = isGoalValid(currentGoal)
+    private fun updateGoal(newGoal: Goal) {
+        if (newGoal == currentGoal) {
+            navigateToMainFragment()
+            return
+        }
 
-        currentGoal = currentGoal.copy(
-            id = currentGoal.id,
-            title = goalTitle.value.orEmpty(),
-            description = goalDescription.value.orEmpty(),
-            creationDate = currentGoal.creationDate,
-            changeDate = getCurrentDate(),
-            isRepeated = currentGoal.isRepeated,
-            genre = selectedChipGenre?.toGenre() ?: Genre.UNKNOWN,
-            status = currentGoal.status,
-            priority = selectedChipPriority?.toPriority() ?: Priority.UNKNOWN
+        currentGoal = newGoal
+
+        val validationStatusCode = GoalValidationStatusCode(
+            statusCode = isGoalValid(currentGoal),
+            isGoalUpdated = true
         )
 
-        if (validationStatusCode == GoalValidationStatusCode.OK) {
+        if (validationStatusCode.statusCode == ValidationStatusCode.OK) {
             viewModelScope.launch {
                 repository.updateGoal(currentGoal)
             }
@@ -107,22 +117,27 @@ class DetailViewModel @Inject constructor(
             creationDate = currentDate,
             changeDate = currentDate,
             isRepeated = false,
-            genre = selectedChipGenre?.toGenre()?:Genre.UNKNOWN,
+            genre = selectedChipGenre?.toGenre() ?: Genre.UNKNOWN,
             status = Status.TODO,
-            priority = selectedChipPriority?.toPriority()?:Priority.UNKNOWN
+            priority = selectedChipPriority?.toPriority() ?: Priority.UNKNOWN
         )
 
-        val validationStatusCode = isGoalValid(newGoal)
+        val goalValidationStatusCode = GoalValidationStatusCode(
+            statusCode = isGoalValid(newGoal),
+            isGoalUpdated = false
+        )
 
-        if (validationStatusCode == GoalValidationStatusCode.OK) {
+
+        if (goalValidationStatusCode.statusCode == ValidationStatusCode.OK) {
             viewModelScope.launch {
                 repository.insert(newGoal)
             }
+
             navigateToMainFragment()
         }
 
         viewModelScope.launch {
-            uiEvent.emit(DetailUIEvent.ShowValidationResult(validationStatusCode))
+            uiEvent.emit(DetailUIEvent.ShowValidationResult(goalValidationStatusCode))
         }
     }
 
@@ -132,13 +147,13 @@ class DetailViewModel @Inject constructor(
 
     private fun getCurrentDate(): String = LocalDateTime.now().toString()
 
-    private fun isGoalValid(goal: Goal): GoalValidationStatusCode {
+    private fun isGoalValid(goal: Goal): ValidationStatusCode {
         goal.apply {
             return when {
-                title.isBlank() -> GoalValidationStatusCode.NO_TITLE
-                description.isBlank() -> GoalValidationStatusCode.NO_DESCRIPTION
-                genre.isGenreNotSet() -> GoalValidationStatusCode.NO_GENRE
-                else -> GoalValidationStatusCode.OK
+                title.isBlank() -> ValidationStatusCode.NO_TITLE
+                description.isBlank() -> ValidationStatusCode.NO_DESCRIPTION
+                genre.isGenreNotSet() -> ValidationStatusCode.NO_GENRE
+                else -> ValidationStatusCode.OK
             }
         }
     }

@@ -1,6 +1,19 @@
 package com.example.aimissionlite.models.domain
 
-enum class GoalValidationStatusCode {
+data class GoalValidationStatusCode(
+    val statusCode: ValidationStatusCode = ValidationStatusCode.UNKNOWN,
+    val isGoalUpdated:Boolean = false
+) {
+    companion object {
+        val EMPTY = GoalValidationStatusCode(
+            statusCode = ValidationStatusCode.UNKNOWN,
+            isGoalUpdated = false
+        )
+    }
+}
+
+
+enum class ValidationStatusCode {
     NO_TITLE,
     NO_DESCRIPTION,
     NO_GENRE,
