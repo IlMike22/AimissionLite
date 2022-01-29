@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.aimissionlite.models.ILandingPageUseCase
+import com.example.aimissionlite.domain.landing_page.use_case.ILandingPageUseCase
 import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Status
 import dagger.hilt.android.lifecycle.HiltViewModel

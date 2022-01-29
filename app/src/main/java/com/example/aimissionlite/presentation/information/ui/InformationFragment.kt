@@ -1,4 +1,4 @@
-package com.example.aimissionlite.presentation.info.ui
+package com.example.aimissionlite.presentation.information.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -15,21 +15,21 @@ import com.example.aimissionlite.core.Resource
 import com.example.aimissionlite.data.AUTHOR_NAME_LABEL
 import com.example.aimissionlite.data.VERSION_NAME_LABEL
 import com.example.aimissionlite.databinding.FragmentInfoBinding
-import com.example.aimissionlite.presentation.info.InfoViewModel
+import com.example.aimissionlite.presentation.information.InformationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_info.*
 
 @AndroidEntryPoint
-class InfoFragment : Fragment() {
-    var infoFragment: InfoFragment? = null
+class InformationFragment : Fragment() {
+    var informationFragment: InformationFragment? = null
 
-    private val TAG = "InfoFragment"
+    private val TAG = "InformationFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val viewModel: InfoViewModel by viewModels()
+        val viewModel: InformationViewModel by viewModels()
 
         viewModel.information.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
@@ -60,26 +60,9 @@ class InfoFragment : Fragment() {
         binding.setVariable(BR.viewModel, viewModel) // binding the view model and execute this
         binding.executePendingBindings()
 
-        infoFragment = this
+        informationFragment = this
 
         return binding.root
 
     }
-
-//    override val versionName: MutableLiveData<String> by lazy {
-//        MutableLiveData<String>()
-//    }
-//
-//    override val author: MutableLiveData<String> by lazy {
-//        MutableLiveData<String>()
-//    }
-//
-//    override fun setAuthor(name: String) {
-//        author.value = name
-//    }
-//
-//    override fun setVersionName(version: String) {
-//        versionName.value = version
-//    }
-
 }

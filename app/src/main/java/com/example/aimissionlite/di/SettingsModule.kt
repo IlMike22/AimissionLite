@@ -3,6 +3,7 @@ package com.example.aimissionlite.di
 import android.content.Context
 import com.example.aimissionlite.data.settings.repository.SettingsRepository
 import com.example.aimissionlite.domain.settings.repository.ISettingsRepository
+import com.example.aimissionlite.domain.settings.use_case.ISettingsUseCase
 import com.example.aimissionlite.domain.settings.use_case.implementation.SettingsUseCase
 import dagger.Module
 import dagger.Provides
@@ -16,7 +17,7 @@ import javax.inject.Singleton
 object SettingsModule {
     @Provides
     @Singleton
-    fun provideUseCase(repository: ISettingsRepository): SettingsUseCase {
+    fun provideUseCase(repository: ISettingsRepository): ISettingsUseCase {
         return SettingsUseCase(repository)
     }
 

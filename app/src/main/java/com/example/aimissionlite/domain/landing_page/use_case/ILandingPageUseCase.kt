@@ -1,4 +1,4 @@
-package com.example.aimissionlite.models
+package com.example.aimissionlite.domain.landing_page.use_case
 
 import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Status

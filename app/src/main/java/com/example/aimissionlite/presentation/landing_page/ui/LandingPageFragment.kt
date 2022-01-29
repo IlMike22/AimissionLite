@@ -72,8 +72,7 @@ class LandingPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        println("!!! set observer (again?)")
-        viewModel.isDeleteAllGoals?.observe(viewLifecycleOwner, { isDeleteAllGoals ->
+        viewModel.isDeleteAllGoals?.observe(viewLifecycleOwner) { isDeleteAllGoals ->
             isDeleteAllGoals?.let { completeGoals ->
                 if (completeGoals) {
                     viewModel.viewModelScope.launch {
@@ -93,7 +92,7 @@ class LandingPageFragment : Fragment() {
                     }
                 }
             }
-        })
+        }
 
         job = CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiEvent.collectLatest { uiEvent ->

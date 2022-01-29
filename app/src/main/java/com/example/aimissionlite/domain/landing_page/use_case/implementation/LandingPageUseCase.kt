@@ -1,8 +1,8 @@
-package com.example.aimissionlite.domain.landing_page.use_case
+package com.example.aimissionlite.domain.landing_page.use_case.implementation
 
 import com.example.aimissionlite.domain.common.repository.IGoalRepository
+import com.example.aimissionlite.domain.landing_page.use_case.ILandingPageUseCase
 import com.example.aimissionlite.domain.settings.repository.ISettingsRepository
-import com.example.aimissionlite.models.ILandingPageUseCase
 import com.example.aimissionlite.models.domain.Goal
 import com.example.aimissionlite.models.domain.Status
 import kotlinx.coroutines.flow.Flow

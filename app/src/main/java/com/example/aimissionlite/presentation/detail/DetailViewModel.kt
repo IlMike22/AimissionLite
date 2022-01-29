@@ -7,7 +7,7 @@ import com.example.aimissionlite.AimissionApplication
 import com.example.aimissionlite.R
 import com.example.aimissionlite.data.Converters.Companion.toGenreId
 import com.example.aimissionlite.data.Converters.Companion.toPriorityId
-import com.example.aimissionlite.domain.common.repository.IGoalRepository
+import com.example.aimissionlite.domain.detail.use_case.IDetailUseCase
 import com.example.aimissionlite.models.domain.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val repository: IGoalRepository,
+    private val useCase: IDetailUseCase,
     app: Application
 ) : AndroidViewModel(app) {
     val uiEvent = MutableSharedFlow<DetailUIEvent<GoalValidationStatusCode>>()
@@ -71,7 +71,7 @@ class DetailViewModel @Inject constructor(
     }
 
     fun getAndShowGoal(id: Int) = viewModelScope.launch {
-        currentGoal = repository.getGoal(id)
+        currentGoal = useCase.getGoal(id)
 
         goalTitle.value = currentGoal.title
         goalDescription.value = currentGoal.description
@@ -96,7 +96,7 @@ class DetailViewModel @Inject constructor(
 
         if (validationStatusCode.statusCode == ValidationStatusCode.OK) {
             viewModelScope.launch {
-                repository.updateGoal(currentGoal)
+                useCase.updateGoal(currentGoal)
             }
 
             navigateToMainFragment()
@@ -130,7 +130,7 @@ class DetailViewModel @Inject constructor(
 
         if (goalValidationStatusCode.statusCode == ValidationStatusCode.OK) {
             viewModelScope.launch {
-                repository.insert(newGoal)
+                useCase.insert(newGoal)
             }
 
             navigateToMainFragment()

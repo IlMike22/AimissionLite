@@ -1,15 +1,15 @@
-package com.example.aimissionlite.presentation.info
+package com.example.aimissionlite.presentation.information
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.aimissionlite.core.Resource
-import com.example.aimissionlite.domain.info.use_case.GetInformationUseCase
+import com.example.aimissionlite.domain.information.use_case.IInformationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class InfoViewModel @Inject constructor(
-    val getInformationUseCase: GetInformationUseCase
+class InformationViewModel @Inject constructor(
+    private val useCase: IInformationUseCase
 ) : ViewModel() {
 
     val information = MutableLiveData<Resource<Map<String, String>>>()
@@ -22,7 +22,7 @@ class InfoViewModel @Inject constructor(
         information.postValue(Resource.Loading())
         information.postValue(
             Resource.Success(
-                data = getInformationUseCase()
+                data = useCase.getInformation()
             )
         )
     }

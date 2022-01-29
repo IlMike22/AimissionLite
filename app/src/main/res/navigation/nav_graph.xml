@@ -48,7 +48,7 @@
 
     <fragment
         android:id="@+id/InfoFragment"
-        android:name="com.example.aimissionlite.presentation.info.ui.InfoFragment"
+        android:name="com.example.aimissionlite.presentation.information.ui.InformationFragment"
         android:label="@string/info_fragment_label"
         tools:layout="@layout/fragment_info">
 
