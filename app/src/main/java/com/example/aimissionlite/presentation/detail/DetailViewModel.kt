@@ -81,6 +81,14 @@ class DetailViewModel @Inject constructor(
         showGoal(currentGoal)
     }
 
+    fun onInfoClicked() {
+        navigateToInfo()
+    }
+
+    fun onSettingsClicked() {
+        navigateToSettings()
+    }
+
     private fun updateGoal(newGoal: Goal) {
         if (newGoal == currentGoal) {
             navigateToMainFragment()
@@ -162,6 +170,18 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             uiEvent.emit(DetailUIEvent.HideKeyboard())
             uiEvent.emit(DetailUIEvent.NavigateToLandingPage())
+        }
+    }
+
+    private fun navigateToSettings() {
+        viewModelScope.launch {
+            uiEvent.emit(DetailUIEvent.NavigateToSettings())
+        }
+    }
+
+    private fun navigateToInfo() {
+        viewModelScope.launch {
+            uiEvent.emit(DetailUIEvent.NavigateToInfo())
         }
     }
 

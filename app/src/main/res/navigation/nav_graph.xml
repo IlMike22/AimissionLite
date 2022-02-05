@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_landing_page">
 
         <action
-            android:id="@+id/action_LandingPageFragment_to_AddGoalFragment"
-            app:destination="@id/AddGoalFragment"
+            android:id="@+id/action_LandingPageFragment_to_DetailFragment"
+            app:destination="@id/DetailFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
@@ -30,15 +30,25 @@
     </fragment>
 
     <fragment
-        android:id="@+id/AddGoalFragment"
+        android:id="@+id/DetailFragment"
         android:name="com.example.aimissionlite.presentation.detail.ui.DetailFragment"
-        android:label="@string/add_goal_fragment_label"
+        android:label="@string/detail_fragment_label"
         tools:layout="@layout/fragment_detail">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            android:id="@+id/action_DetailFragment_to_LandingPageFragment"
             app:destination="@id/LandingPageFragment"
             app:popUpTo="@id/LandingPageFragment"/>
+
+        <action
+            android:id="@+id/action_DetailFragment_to_SettingsFragment"
+            app:destination="@id/SettingsFragment"
+            app:popUpTo="@id/SettingsFragment"/>
+
+        <action
+            android:id="@+id/action_DetailFragment_to_InfoFragment"
+            app:destination="@id/InfoFragment"
+            app:popUpTo="@id/InfoFragment"/>
 
         <argument
             android:name="goal_title"
@@ -56,6 +66,10 @@
             android:id="@+id/action_InfoFragment_to_LandingPageFragment"
             app:destination="@id/LandingPageFragment" />
 
+        <action
+            android:id="@+id/action_InfoFragment_to_DetailFragment"
+            app:destination="@id/DetailFragment" />
+
     </fragment>
 
     <fragment
@@ -67,6 +81,10 @@
         <action
             android:id="@+id/action_SettingsFragment_to_LandingPageFragment"
             app:destination="@id/LandingPageFragment" />
+
+        <action
+            android:id="@+id/action_SettingsFragment_to_DetailFragment"
+            app:destination="@id/DetailFragment" />
 
     </fragment>
 

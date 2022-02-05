@@ -30,7 +30,7 @@ class LandingPageViewModel @Inject constructor(
 
     fun onAddGoalClicked() {
         viewModelScope.launch {
-            uiEvent.emit(LandingPageUiEvent.NavigateToAddGoal())
+            uiEvent.emit(LandingPageUiEvent.NavigateToDetail())
         }
     }
 
@@ -61,7 +61,7 @@ class LandingPageViewModel @Inject constructor(
     fun onGoalContainerClicked(goal: Goal?) {
         viewModelScope.launch {
             goal?.apply {
-                uiEvent.emit(LandingPageUiEvent.NavigateToAddGoal(this))
+                uiEvent.emit(LandingPageUiEvent.NavigateToDetail(this))
             }
         }
     }

@@ -11,12 +11,12 @@ class LandingPageNavigation(
     private val navController: NavController
 ) : ILandingPageNavigation {
     override fun navigateLandingPageToAddGoal() {
-        navController.navigate(R.id.action_LandingPageFragment_to_AddGoalFragment)
+        navController.navigate(R.id.action_LandingPageFragment_to_DetailFragment)
     }
 
     override fun navigateLandingPageToAddGoal(goal: Goal) {
         val bundle = bundleOf(BUNDLE_ID_GOAL to goal.id)
-        navController.navigate(R.id.action_LandingPageFragment_to_AddGoalFragment, bundle)
+        navController.navigate(R.id.action_LandingPageFragment_to_DetailFragment, bundle)
     }
 
     override fun navigateLandingPageToInfo() {

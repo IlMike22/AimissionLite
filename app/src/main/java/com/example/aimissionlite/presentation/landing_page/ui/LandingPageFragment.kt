@@ -111,9 +111,9 @@ class LandingPageFragment : Fragment() {
                         findNavController().navigate(R.id.action_LandingPageFragment_to_InfoFragment)
                         job?.cancel()
                     }
-                    is LandingPageUiEvent.NavigateToAddGoal -> {
+                    is LandingPageUiEvent.NavigateToDetail -> {
                         val bundle = bundleOf(BUNDLE_ID_GOAL to uiEvent.goal?.id)
-                        findNavController().navigate(R.id.action_LandingPageFragment_to_AddGoalFragment, bundle)
+                        findNavController().navigate(R.id.action_LandingPageFragment_to_DetailFragment, bundle)
                         job?.cancel()
                     }
                 }

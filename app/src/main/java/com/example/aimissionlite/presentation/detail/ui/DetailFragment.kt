@@ -3,6 +3,7 @@ package com.example.aimissionlite.presentation.detail.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -15,6 +16,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.example.aimissionlite.BR
 import com.example.aimissionlite.MainActivity
 import com.example.aimissionlite.R
@@ -39,6 +41,11 @@ import kotlinx.coroutines.launch
 class DetailFragment : Fragment() {
     private val viewModel: DetailViewModel by viewModels()
     val TAG = "DetailFragment"
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,11 +91,27 @@ class DetailFragment : Fragment() {
                     }
                     is DetailUIEvent.HideKeyboard -> hideKeyboard(activity?.currentFocus)
                     is DetailUIEvent.NavigateToLandingPage -> navigateToLandingPage()
+                    is DetailUIEvent.NavigateToSettings -> navigateToSettings()
+                    is DetailUIEvent.NavigateToInfo -> navigateToInfo()
                 }
             }
         }
 
         setupChipGroupCheckedChangeListeners()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_info -> {
+                viewModel.onInfoClicked()
+                true
+            }
+            R.id.action_settings -> {
+                viewModel.onSettingsClicked()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setupChipGroupCheckedChangeListeners() {
@@ -127,7 +150,15 @@ class DetailFragment : Fragment() {
         val bundle =
             bundleOf(resources.getString(R.string.bundle_argument_goal_title) to viewModel.goalTitle.value)
         NavHostFragment.findNavController(this)
-            .navigate(R.id.action_SecondFragment_to_FirstFragment, bundle)
+            .navigate(R.id.action_DetailFragment_to_LandingPageFragment, bundle)
+    }
+
+    private fun navigateToSettings() {
+        findNavController().navigate(R.id.action_DetailFragment_to_SettingsFragment)
+    }
+
+    private fun navigateToInfo() {
+        findNavController().navigate(R.id.action_DetailFragment_to_InfoFragment)
     }
 
     private fun showValidationResult(goalValidationStatusCode: GoalValidationStatusCode) {
