@@ -176,6 +176,7 @@ class DetailViewModel @Inject constructor(
     private fun navigateToSettings() {
         viewModelScope.launch {
             uiEvent.emit(DetailUIEvent.NavigateToSettings())
+
         }
     }
 

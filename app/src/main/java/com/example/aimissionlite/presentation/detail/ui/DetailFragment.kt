@@ -15,8 +15,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.example.aimissionlite.BR
 import com.example.aimissionlite.MainActivity
 import com.example.aimissionlite.R
@@ -30,6 +33,7 @@ import com.example.aimissionlite.presentation.detail.DetailViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +46,8 @@ class DetailFragment : Fragment() {
     private val viewModel: DetailViewModel by viewModels()
     val TAG = "DetailFragment"
 
+    var isNavigationAlreadyCalled = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
@@ -51,6 +57,14 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        val navController: NavController = findNavController()
+
+        activity?.toolbar?.setupWithNavController(
+            navController = navController,
+            configuration = AppBarConfiguration(navController.graph)
+        )
+
         val binding: FragmentDetailBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
         binding.lifecycleOwner = this
@@ -153,12 +167,23 @@ class DetailFragment : Fragment() {
             .navigate(R.id.action_DetailFragment_to_LandingPageFragment, bundle)
     }
 
+    override fun onResume() {
+        isNavigationAlreadyCalled = false
+        super.onResume()
+    }
+
     private fun navigateToSettings() {
-        findNavController().navigate(R.id.action_DetailFragment_to_SettingsFragment)
+        if (isNavigationAlreadyCalled.not()) {
+            findNavController().navigate(R.id.action_DetailFragment_to_SettingsFragment)
+            isNavigationAlreadyCalled = true
+        }
     }
 
     private fun navigateToInfo() {
-        findNavController().navigate(R.id.action_DetailFragment_to_InfoFragment)
+        if (isNavigationAlreadyCalled.not()) {
+            findNavController().navigate(R.id.action_DetailFragment_to_InfoFragment)
+            isNavigationAlreadyCalled = true
+        }
     }
 
     private fun showValidationResult(goalValidationStatusCode: GoalValidationStatusCode) {
